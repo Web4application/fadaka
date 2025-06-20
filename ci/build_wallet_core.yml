@@ -1,0 +1,35 @@
+name: Build Wallet Core
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Wallet Core Image
+        run: |
+          docker build -f docker/wallet-core.Dockerfile -t fadaka-wallet-core .
+
+      - name: Extract Build Artifacts
+        run: |
+          docker create --name wallet-builder fadaka-wallet-core
+          docker cp wallet-builder:/wallet-core/build/libTrustWalletCore.a ./dist/
+          docker cp wallet-builder:/wallet-core/build/tests ./dist/tests
+          docker cp wallet-builder:/wallet-core/build/libWalletCoreWasm.* ./dist/ || true
+          docker rm wallet-builder
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wallet-core-artifacts
+          path: dist/
