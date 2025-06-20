@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swift Beta Wallet - Fadaka</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode"></script>
+  <style>
+    body { font-family: sans-serif; background: #f0f4f8; padding: 1em; }
+    .card { background: white; padding: 1.5em; border-radius: 1em; box-shadow: 0 0 10px #ccc; margin-bottom: 1em; }
+    button { padding: 0.5em 1em; border: none; background: #007bff; color: white; border-radius: 0.5em; cursor: pointer; }
+    input { padding: 0.5em; width: 100%; margin-top: 0.5em; margin-bottom: 1em; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Swift Beta Wallet</h1>
+
+  <div class="card">
+    <button onclick="connectWallet()">Connect Wallet</button>
+    <p><strong>Address:</strong> <span id="address"></span></p>
+    <p><strong>FDAK Balance:</strong> <span id="balance">0</span></p>
+  </div>
+
+  <div class="card">
+    <h3>Send FDAK</h3>
+    <input type="text" id="toAddress" placeholder="Recipient address">
+    <input type="number" id="amount" placeholder="Amount in FDAK">
+    <button onclick="sendFDAK()">Send</button>
+  </div>
+
+  <div class="card">
+    <h3>Faucet (Test)</h3>
+    <button onclick="faucet()">Request Test Tokens</button>
+  </div>
+
+  <div class="card">
+    <h3>Receive</h3>
+    <canvas id="qrcode"></canvas>
+    <button onclick="showQR()">Show QR</button>
+  </div>
+
+  <div class="card">
+    <h3>Transaction History</h3>
+    <ul id="txs"></ul>
+  </div>
+
+  <script>
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const FDAK_ABI = ["function balanceOf(address) view returns (uint256)", "function transfer(address to, uint amount) returns (bool)"];
+    const FDAK_ADDR = "0xYourFDAKAddressHere";
+
+    let signer, token, address;
+
+    async function connectWallet() {
+      await provider.send("eth_requestAccounts", []);
+      signer = await provider.getSigner();
+      address = await signer.getAddress();
+      token = new ethers.Contract(FDAK_ADDR, FDAK_ABI, signer);
+      document.getElementById("address").innerText = address;
+      refreshBalance();
+    }
+
+    async function refreshBalance() {
+      const bal = await token.balanceOf(address);
+      document.getElementById("balance").innerText = ethers.formatUnits(bal, 18);
+    }
+
+    async function sendFDAK() {
+      const to = document.getElementById("toAddress").value;
+      const amt = ethers.parseUnits(document.getElementById("amount").value, 18);
+      const tx = await token.transfer(to, amt);
+      await tx.wait();
+      refreshBalance();
+    }
+
+    async function faucet() {
+      alert("This would send test FDAK from faucet contract (connect to backend faucet).");
+    }
+
+    function showQR() {
+      const canvas = document.getElementById("qrcode");
+      QRCode.toCanvas(canvas, address, function (error) {
+        if (error) console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>

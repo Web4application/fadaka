@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>…</head>
+<body>
+  <h1>Swift Beta Wallet</h1>
+  <!-- Wallet Connect & Balances -->
+  <div class="card" id="walletCard">…</div>
+  <!-- Send & Faucet -->
+  <div class="card hidden" id="sendCard">…</div>
+  <!-- Receive QR & Scan -->
+  <div class="card hidden" id="qrCard">…</div>
+  <!-- Swap Interface -->
+  <div class="card hidden" id="swapCard">…</div>
+  <!-- Tx History -->
+  <div class="card hidden" id="txCard">…</div>
+
+  <!-- Scripts for ethers, QRCode, QR Detect, Faucet -->
+  <script>
+    const RPC = 'https://rpc.fadaka.chain';
+    const FDAK_ADDR = 'YOUR_FDAK_ADDRESS';
+    const KUBU_ADDR = 'YOUR_KUBU_ADDRESS';
+    const FDAK_ABI = […];
+    const KUBU_ABI = […];
+
+    let signer, fda, kubu, userAddress;
+    const provider = new ethers.JsonRpcProvider(RPC);
+
+    async function connectWallet() { … }
+    async function refreshBalances() { … }
+    async function sendFDAK() { … }
+    function faucet() { … }
+    function showQR() { … }
+    async function swapTokens() { … }
+    async function loadTxHistory() { … }
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Swift Beta Wallet</title>
+  <script src="https://cdn.jsdelivr.net/npm/bip39@3.0.4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bip32@2.0.6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bitcoinjs-lib@6.1.0"></script>
+  <style>
+    body { font-family: monospace; background: #0f0f0f; color: #f0f0f0; padding: 2rem; }
+    button { background: #00ffa3; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-size: 1rem; }
+    pre { background: #111; padding: 1rem; border-radius: 12px; overflow-x: auto; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>🚀 Swift Beta Wallet - HD Generator</h1>
+  <button onclick="createHDWallet()">Generate New Wallet</button>
+  <pre id="walletOutput">No wallet generated yet.</pre>
+
+  <script>
+    async function generateWallet(mnemonic) {
+      const bip39 = window.bip39;
+      const bip32 = window.bip32;
+      const bitcoin = window.bitcoinjs;
+
+      if (!mnemonic) {
+        mnemonic = bip39.generateMnemonic();
+      }
+
+      const seed = await bip39.mnemonicToSeed(mnemonic);
+      const root = bip32.fromSeed(seed);
+
+      const path = "m/44'/60'/0'/0/0"; // Ethereum-style
+      const child = root.derivePath(path);
+
+      const privateKey = child.privateKey.toString('hex');
+      const publicKey = child.publicKey.toString('hex');
+
+      const address = bitcoin.payments.p2pkh({
+        pubkey: child.publicKey,
+        network: bitcoin.networks.bitcoin,
+      }).address;
+
+      return {
+        mnemonic,
+        privateKey,
+        publicKey,
+        address
+      };
+    }
+
+    async function createHDWallet() {
+      const wallet = await generateWallet();
+      document.getElementById("walletOutput").textContent = JSON.stringify(wallet, null, 2);
+    }
+  </script>
+</body>
+</html>
