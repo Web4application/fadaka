@@ -1,0 +1,11 @@
+{
+  "app.title": "Blockchain Fadaka",
+  "header.welcome": "Bienvenue sur Blockchain Fadaka",
+  "header.balance": "Votre solde est de {balance} Fadaka Coins",
+  "transaction.sender": "Expéditeur",
+  "transaction.receiver": "Récepteur",
+  "transaction.amount": "Montant: {amount} Fadaka Coins",
+  "wallet.title": "Aperçu du portefeuille",
+  "wallet.address": "Adresse du portefeuille",
+  "wallet.balance": "Solde: {balance} Fadaka Coins"
+}
