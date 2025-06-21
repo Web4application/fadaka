@@ -19,14 +19,14 @@ It returns the required function selector `0xf23a6e61` and reverts any unrecogni
 
 ### Solidity Source Code
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
 
-import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
-import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.21;
 
-contract OpenERC1155Receiver is IERC1155Receiver, ERC165 {
+    import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+    import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+
+    contract OpenERC1155Receiver is IERC1155Receiver, ERC165 {
     function onERC1155Received(
         address,
         address,
@@ -54,4 +54,4 @@ contract OpenERC1155Receiver is IERC1155Receiver, ERC165 {
 
     fallback() external payable {}
     receive() external payable {}
-}
+    }
