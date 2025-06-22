@@ -1,0 +1,1 @@
+This archive contains the solution and project files for Visual Studio 2005. The unzipped files were primary Visual Studio files distributed for Crypto++ upto (and including) Crypto++ 5.6.3. At Crypto++ 5.6.4, the project began using Visual Studio 2010 by default.
