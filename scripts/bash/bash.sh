@@ -2,7 +2,7 @@ npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox dotenv
 
 npx hardhat compile
 npx hardhat run scripts/deploy-v2.js --network fadakaTestnet
-
+npx hardhat run scripts/deploy-fadaka-upgradeable.js --network fadakaTestnet
 # In a separate terminal, start local blockchain node
 npx hardhat node
 
