@@ -40,3 +40,4 @@ go install go.uber.org/nilaway/cmd/nilaway@v0.0.0-20240821220108-c91e71c080b7
 go install github.com/daixiang0/gci@v0.11.2
 
 npx hardhat verify --network fadakaTestnet YOUR_PROXY_ADDRESS
+const upgraded = await upgrades.upgradeProxy(proxyAddress, FadakaTokenV2);
