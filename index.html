@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fadaka TX Web UI</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      padding: 2em;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #1c1c1c;
+      padding: 2em;
+      border-radius: 8px;
+    }
+    input, select, textarea {
+      width: 100%;
+      margin-bottom: 1em;
+      padding: 0.6em;
+      border-radius: 4px;
+      border: none;
+      background: #333;
+      color: white;
+    }
+    button {
+      padding: 0.75em 1.5em;
+      background: #00ffaa;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    h2 {
+      margin-bottom: 1em;
+    }
+    pre {
+      background: #111;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Fadaka TX Builder & Signer (Web UI)</h2>
+
+    <label>RPC URL</label>
+    <input id="rpcUrl" value="http://localhost:8545" />
+
+    <label>Upload Keystore (.json)</label>
+    <input type="file" id="keystoreFile" accept=".json" />
+
+    <label>Password</label>
+    <input id="password" type="password" placeholder="Enter password" />
+
+    <label>To Address</label>
+    <input id="to" placeholder="0x..." />
+
+    <label>Value (ETH)</label>
+    <input id="value" placeholder="0.01" />
+
+    <label>Gas Limit</label>
+    <input id="gas" placeholder="21000" value="21000" />
+
+    <label>Max Fee Per Gas (Gwei)</label>
+    <input id="maxFee" placeholder="50" />
+
+    <label>Max Priority Fee (Gwei)</label>
+    <input id="priorityFee" placeholder="2" />
+
+    <label>Nonce</label>
+    <input id="nonce" placeholder="0" />
+
+    <label>Chain ID</label>
+    <input id="chainId" placeholder="8888" />
+
+    <button onclick="signAndSend()">🚀 Sign & Send</button>
+
+    <h3>Result</h3>
+    <pre id="output">Output will appear here...</pre>
+  </div>
+
+  <script>
+    let decryptedWallet = null;
+
+    document.getElementById('keystoreFile').addEventListener('change', function () {
+      const file = this.files[0];
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        try {
+          const keystore = JSON.parse(e.target.result);
+          const password = document.getElementById("password").value;
+          decryptedWallet = await ethers.Wallet.fromEncryptedJson(JSON.stringify(keystore), password);
+          document.getElementById("output").textContent = "✅ Wallet decrypted: " + decryptedWallet.address;
+        } catch (e) {
+          document.getElementById("output").textContent = "❌ Error decrypting wallet: " + e.message;
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    async function signAndSend() {
+      if (!decryptedWallet) {
+        alert("Please load and decrypt your keystore.");
+        return;
+      }
+
+      const provider = new ethers.providers.JsonRpcProvider(document.getElementById("rpcUrl").value);
+      const wallet = decryptedWallet.connect(provider);
+
+      const tx = {
+        to: document.getElementById("to").value,
+        value: ethers.utils.parseEther(document.getElementById("value").value),
+        gasLimit: ethers.BigNumber.from(document.getElementById("gas").value),
+        maxFeePerGas: ethers.utils.parseUnits(document.getElementById("maxFee").value, "gwei"),
+        maxPriorityFeePerGas: ethers.utils.parseUnits(document.getElementById("priorityFee").value, "gwei"),
+        nonce: parseInt(document.getElementById("nonce").value),
+        chainId: parseInt(document.getElementById("chainId").value),
+        type: 2
+      };
+
+      try {
+        const response = await wallet.sendTransaction(tx);
+        document.getElementById("output").textContent = "🚀 TX Sent!\nHash: " + response.hash;
+      } catch (err) {
+        document.getElementById("output").textContent = "❌ TX Failed: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
