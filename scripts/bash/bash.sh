@@ -1,6 +1,7 @@
 npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox dotenv
 
 npx hardhat compile
+npx hardhat run scripts/deploy-v2.js --network fadakaTestnet
 
 # In a separate terminal, start local blockchain node
 npx hardhat node
@@ -38,4 +39,4 @@ go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.60.3
 go install go.uber.org/nilaway/cmd/nilaway@v0.0.0-20240821220108-c91e71c080b7
 go install github.com/daixiang0/gci@v0.11.2
 
-npx hardhat run scripts/deploy-fadaka-token.js --network fadaka
+npx hardhat verify --network fadakaTestnet YOUR_PROXY_ADDRESS
