@@ -49,3 +49,12 @@ npx hardhat verify --network fadakaTestnet YOUR_PROXY_ADDRESS
 git clone https://github.com/Web4application/fadakacoin.git
 cd fadakacoin/backend && npm install
 cd ../frontend && npm install
+
+# Set up .env
+FADAKA_TESTNET_RPC=https://rpc.fadaka.io
+FADAKA_PRIVATE_KEY=your_wallet_private_key
+FADAKA_EXPLORER_API_KEY=optional_api_key
+
+# Then run:
+npx hardhat compile
+npx hardhat run scripts/deploy-v2.js --network fadakaTestnet
