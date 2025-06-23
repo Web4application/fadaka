@@ -57,6 +57,6 @@ app.get('/balance/:address', (req, res) => {
 });
 
 // Start the Server
-app.listen(3000, () => {
-    console.log('Blockchain API is running on http://localhost:3000');
+app.listen(8080, () => {
+    console.log('Blockchain API is running on http://localhost:5000');
 });
