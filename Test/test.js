@@ -30,3 +30,25 @@ blockchain.minePendingTransactions('0x123');
 
 // Check balance of the receiver
 console.log('Balance of receiver:', blockchain.getBalanceOfAddress('0x456'));
+
+const { expect } = require("chai");
+const { ethers, upgrades } = require("hardhat");
+
+describe("FadakaToken Upgrade", function () {
+  it("should upgrade to V2 and retain state", async function () {
+    const [deployer] = await ethers.getSigners();
+
+    const FadakaToken = await ethers.getContractFactory("FadakaTokenV2");
+    const proxy = await upgrades.deployProxy(FadakaToken, [], {
+      initializer: "initialize",
+    });
+
+    const proxyAddress = await proxy.getAddress();
+    expect(await proxy.name()).to.equal("FadakaToken");
+
+    const FadakaTokenV2 = await ethers.getContractFactory("FadakaTokenV2");
+    const upgraded = await upgrades.upgradeProxy(proxyAddress, FadakaTokenV2);
+
+    expect(await upgraded.version()).to.equal("Fadaka v2.0 - With Roles");
+  });
+});
