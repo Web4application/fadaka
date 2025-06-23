@@ -1,20 +1,13 @@
 const { ethers, upgrades } = require("hardhat");
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
-  console.log("🛠 Deploying FadakaTokenV2 with deployer:", deployer.address);
-
-  const FadakaTokenV2 = await ethers.getContractFactory("FadakaTokenV2");
-
-  const proxy = await upgrades.deployProxy(FadakaTokenV2, [], {
-    initializer: "initialize",
-    kind: "transparent",
-  });
-
-  console.log("✅ Proxy deployed at:", await proxy.getAddress());
+    const FadakaToken = await ethers.getContractFactory("FadakaTokenUpgradeable");
+    const fadaka = await upgrades.deployProxy(FadakaToken, [], { initializer: "initialize" });
+    await fadaka.waitForDeployment();
+    console.log("FadakaToken deployed to:", await fadaka.getAddress());
 }
 
 main().catch((error) => {
-  console.error(error);
-  process.exit(1);
+    console.error(error);
+    process.exitCode = 1;
 });
