@@ -58,3 +58,7 @@ FADAKA_EXPLORER_API_KEY=optional_api_key
 # Then run:
 npx hardhat compile
 npx hardhat run scripts/deploy-v2.js --network fadakaTestnet
+
+./btfs init
+./btfs daemon
+
