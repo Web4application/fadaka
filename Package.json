@@ -11,7 +11,9 @@
     "deploy:testnet": "npx hardhat run scripts/deploy-all.js --network fadakaTestnet",
     "deploy:mainnet": "npx hardhat run scripts/deploy-all.js --network fadakaMainnet",
     "verify": "node scripts/verify.js",
-    "docs": "solidity-docgen --input ./contracts --output ./docs"
+    "docs": "solidity-docgen --input ./contracts --output ./docs",
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "keywords": [
     "fadaka",
@@ -20,7 +22,7 @@
     "solidity",
     "smart-contracts"
   ],
-  "author": "seriki Yakub",
+  "author": "Seriki Yakub",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.3.1",
@@ -37,11 +39,9 @@
     "hardhat-contract-sizer": "^3.1.1",
     "mocha": "^10.4.0",
     "solidity-docgen": "^0.6.0",
-    "typechain": "^8.0.0"
+    "typechain": "^8.0.0",
+    "eslint": "^8.56.0",
+    "husky": "^9.0.11",
+    "jest": "^29.7.0"
   }
-"scripts": {
-  "lint": "eslint .",
-  "test": "jest",
-  "prepare": "husky install"
- }
 }
