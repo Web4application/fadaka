@@ -31,6 +31,7 @@ artifacts/contracts/MyContract.sol/MyContract.json
 npm init -y
 npm install --save-dev hardhat
 npx hardhat
+
 go install mvdan.cc/gofumpt@v0.4.0
 go install honnef.co/go/tools/cmd/staticcheck@v0.4.2
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.60.3
