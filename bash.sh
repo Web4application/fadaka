@@ -1,3 +1,15 @@
+# Build (native arch)
+docker build -t fadaka:latest .
+
+# Build cross‑arch (e.g., arm64):
+docker buildx build --platform linux/arm64 -t fadaka:arm64 .
+
+# Run
+docker run -it --rm \
+  -p 30303:30303 -p 8545:8545 \
+  fadaka:latest
+
+
 # In a separate terminal, start local blockchain node
 npx hardhat node
 npx hardhat run scripts/deploy.js --network localhost
