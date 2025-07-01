@@ -1,0 +1,61 @@
+version: "3.9"
+
+x-common-env: &common-env
+  FADAKA_NETWORK: ${FADAKA_NETWORK:-mainnet}
+  LOG_LEVEL: info
+
+services:
+  node:
+    image: ghcr.io/web4application/fadaka:latest  # built from the Dockerfile we wrote
+    container_name: fadaka-node
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+    volumes:
+      - fadaka-data:/app/data
+    ports:
+      - "30303:30303"        # P2P
+      - "8545:8545"          # RPC
+      - "8546:8546"          # WS
+    command: >
+      node --config /app/config.toml
+           --db /app/data
+           --log-level $${LOG_LEVEL}
+
+  peer-registry:
+    image: ghcr.io/web4application/fadaka-registry:latest
+    container_name: fadaka-registry
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+      REGISTRY_PORT: 7000
+    ports:
+      - "7000:7000"
+
+  wallet-api:
+    image: ghcr.io/web4application/swift-beta-api:latest
+    container_name: swift-beta-api
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - node
+
+  faucet:
+    image: ghcr.io/web4application/fadaka-faucet:latest
+    container_name: fadaka-faucet
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+      PORT: 5000
+      NODE_RPC_URL: http://node:8545
+    ports:
+      - "5000:5000"
+    depends_on:
+      - node
+
+volumes:
+  fadaka-data:
