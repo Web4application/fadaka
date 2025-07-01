@@ -2,10 +2,10 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("OpenERC1155Receiver", function () {
-  let receiver, erc1155, owner, user;
+  let receiver, erc1155, owner;
 
   beforeEach(async () => {
-    [owner, user] = await ethers.getSigners();
+    [owner] = await ethers.getSigners();
 
     const Receiver = await ethers.getContractFactory("OpenERC1155Receiver");
     receiver = await Receiver.deploy();
@@ -16,12 +16,12 @@ describe("OpenERC1155Receiver", function () {
     await erc1155.setApprovalForAll(receiver.address, true);
   });
 
-  it("should accept single transfer", async () => {
+  it("accepts single token transfer", async () => {
     await erc1155.safeTransferFrom(owner.address, receiver.address, 1, 1, "0x");
     expect(await erc1155.balanceOf(receiver.address, 1)).to.equal(1);
   });
 
-  it("should accept batch transfer", async () => {
+  it("accepts batch token transfer", async () => {
     await erc1155.mint(owner.address, 2, 5, "0x");
     await erc1155.safeBatchTransferFrom(
       owner.address,
