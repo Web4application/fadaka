@@ -5,14 +5,14 @@ from eth_account._utils.legacy_transactions import serializable_unsigned_transac
 from eth_account._utils.typed_transactions import TypedTransaction
 
 # Connect to Fadaka-compatible node (change this!)
-w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
+w3 = Web3(Web3.HTTPProvider("http://localhost:8000"))
 
 # Raw unsigned transaction (no r, s, v)
 raw_tx_hex = "02f87001018462a630118462a63011825208949bf1810999cf0b79beec235308f272567064f9668604d1202b813080c001"
 raw_tx_bytes = bytes.fromhex(raw_tx_hex[2:] if raw_tx_hex.startswith("0x") else raw_tx_hex)
 
 # Load private key
-private_key = "8a60eed8deb1bled4d578f7f79482f506085d85dffb9330bbc6161a080313e30"  # Replace with your private key
+private_key = "8a60eed8deb1b1ed4d578f7f79482f506085d85dffb9330bbc6161a080313e30"  # Replace with your private key
 acct = Account.from_key(private_key)
 
 # Parse transaction
