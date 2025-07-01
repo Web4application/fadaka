@@ -1,150 +1,171 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Swift Beta Wallet – Fadaka</title>
-  <script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js"></script>
+  <title>Fadaka Blockchain</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.min.js"></script>
   <style>
     body {
-      background: radial-gradient(circle at top, #0a0a0a, #000);
-      color: white;
-      font-family: monospace;
-      margin: 0;
-      padding: 2em;
-    }
-    h1 {
+      font-family: 'Arial', sans-serif;
       text-align: center;
-      color: #66ffcc;
+      margin-top: 100px;
+      background: linear-gradient(to bottom right, #e0e0e0, #ffffff);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 2em;
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background-color: #5555ff;
+      color: white;
+      transition: background-color 0.3s ease;
     }
-    table, th, td {
-      border: 1px solid #444;
+    button:hover {
+      background-color: #3333cc;
     }
-    th, td {
-      padding: 10px;
-      text-align: left;
+    input {
+      padding: 8px;
+      margin: 5px;
+      font-size: 16px;
+      width: 250px;
     }
-    th {
-      background: #222;
+    p {
+      font-size: 18px;
     }
-    input, button {
-      font-family: monospace;
+    .loader {
+      display: none;
+      margin: 20px;
     }
   </style>
 </head>
 <body>
 
-<h1>🌐 Swift Beta Wallet – Fadaka Chain</h1>
+  <h1>Fadaka (FDK) Blockchain dApp</h1>
 
-<!-- 🔥 Burn Fadaka Tokens -->
-<section id="burn-fadak" style="margin: 3em auto; max-width: 600px; background: linear-gradient(145deg, #1c0000, #330000); border: 1px solid #400; padding: 1.5em; border-radius: 12px; color: #fff; box-shadow: 0 0 20px #ff444422;">
-  <h2 style="color: #ff6666;">🔥 Burn FDAK</h2>
-  <p>Burn tokens to remove them from circulation forever.</p>
-  <input type="number" id="burnAmount" placeholder="Amount to burn" style="padding: 10px; width: 200px;" />
-  <button onclick="burnFadak()" style="padding: 10px 20px; background: #ff4444; color: white; border: none;">Burn</button>
-  <p id="burnStatus" style="margin-top: 1em;"></p>
-</section>
+  <button onclick="connectWallet()">Connect Wallet</button>
+  <p id="walletAddress">Wallet: Not connected</p>
 
-<!-- 📜 Mint & Burn History -->
-<section id="mint-burn-history" style="margin-top: 3em;">
-  <h2 style="color: #66ffcc;">📜 Mint & Burn History</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Address</th>
-        <th>Amount</th>
-        <th>Block</th>
-        <th>Timestamp</th>
-      </tr>
-    </thead>
-    <tbody id="history-table-body">
-      <tr><td colspan="5">Loading data...</td></tr>
-    </tbody>
-  </table>
-</section>
+  <button onclick="getBalance()">Check FDK Balance</button>
+  <p id="balance">Balance: 0 FDK</p>
 
-<script>
-  const tokenAddress = "0xCaAA9A2A8B4d0dfD9ca5eC406ae11663CdC3Dd43";
-  const zeroAddress = "0x0000000000000000000000000000000000000000";
+  <h2>Send FDK Tokens</h2>
+  <input type="text" id="recipient" placeholder="Recipient Address"><br>
+  <input type="text" id="amount" placeholder="Amount"><br>
+  <button onclick="confirmSendTokens()">Send Tokens</button>
 
-  const fadakAbi = [
-    {
-      "constant": false,
-      "inputs": [
-        { "name": "_to", "type": "address" },
-        { "name": "_value", "type": "uint256" }
-      ],
-      "name": "transfer",
-      "outputs": [{ "name": "", "type": "bool" }],
-      "type": "function"
-    }
-  ];
+  <p id="status"></p>
+  
+  <!-- Loader/Spinner -->
+  <div class="loader" id="loader">Processing...</div>
 
-  async function burnFadak() {
-    const amount = document.getElementById("burnAmount").value;
-    const status = document.getElementById("burnStatus");
+  <h3>Transaction History:</h3>
+  <ul id="transactionHistory"></ul>
 
-    if (!window.ethereum) {
-      status.innerText = "🦊 Please install MetaMask to use this feature.";
-      return;
+  <script>
+    let provider;
+    let signer;
+    let contract;
+    let address;
+    let transactionHistory = [];
+
+    const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS";  // <-- Replace!
+    const abi = [
+      "function name() view returns (string)",
+      "function symbol() view returns (string)",
+      "function decimals() view returns (uint8)",
+      "function totalSupply() view returns (uint256)",
+      "function balanceOf(address owner) view returns (uint256)",
+      "function transfer(address to, uint amount) returns (bool)"
+    ];
+
+    async function connectWallet() {
+      if (window.ethereum) {
+        provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = await provider.getSigner();
+        contract = new ethers.Contract(contractAddress, abi, signer);
+        address = await signer.getAddress();
+        document.getElementById('walletAddress').innerText = `Wallet: ${address}`;
+        alert('Wallet Connected!');
+        startAutoRefresh();
+      } else {
+        alert('MetaMask not detected!');
+      }
     }
 
-    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-      status.innerText = "❌ Please enter a valid FDAK amount.";
-      return;
+    async function getBalance() {
+      if (!contract) {
+        alert('Please connect wallet first.');
+        return;
+      }
+      const balance = await contract.balanceOf(address);
+      const formattedBalance = ethers.formatUnits(balance, 18);
+      document.getElementById('balance').innerText = `Balance: ${formattedBalance} FDK`;
     }
 
-    try {
-      await ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const fadakToken = new ethers.Contract(tokenAddress, fadakAbi, signer);
+    async function confirmSendTokens() {
+      const recipient = document.getElementById('recipient').value;
+      const amount = document.getElementById('amount').value;
 
-      const tx = await fadakToken.transfer(zeroAddress, ethers.utils.parseUnits(amount, 18));
-      status.innerText = `🔥 Burning ${amount} FDAK... TX: ${tx.hash}`;
-      await tx.wait();
-      status.innerText = `✅ Successfully burned ${amount} FDAK.`;
-    } catch (err) {
-      status.innerText = `❌ Error: ${err.message}`;
+      if (!recipient || !amount) {
+        alert('Please enter recipient and amount!');
+        return;
+      }
+
+      const confirmation = confirm(`Are you sure you want to send ${amount} FDK to ${recipient}?`);
+      if (confirmation) {
+        sendTokens(recipient, amount);
+      }
     }
-  }
 
-  async function loadMintBurnHistory() {
-    const url = "https://raw.githubusercontent.com/Web4application/Fadaka-blockchain/main/0x0000000000000000000000000000000000000000.csv";
-    try {
-      const response = await fetch(url);
-      const csv = await response.text();
-      const rows = csv.trim().split('\n').slice(1);
-      const tbody = document.getElementById("history-table-body");
-      tbody.innerHTML = "";
+    async function sendTokens(recipient, amount) {
+      try {
+        // Show loader while transaction is pending
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('status').innerText = 'Transaction pending...';
 
-      rows.forEach(row => {
-        const [address, amount, block, timestamp, type] = row.split(",");
-        const emoji = type.toLowerCase().includes("mint") ? "🟢" : "🔴";
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${emoji} ${type}</td>
-          <td>${address}</td>
-          <td>${amount}</td>
-          <td>${block}</td>
-          <td>${timestamp}</td>`;
-        tbody.appendChild(tr);
+        // Send the tokens
+        const tx = await contract.transfer(recipient, ethers.parseUnits(amount, 18));
+        await tx.wait();
+
+        // Add to transaction history
+        transactionHistory.push(`Sent ${amount} FDK to ${recipient}`);
+        updateTransactionHistory();
+
+        // Hide loader and show success message
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('status').innerText = 'Transaction successful!';
+
+        // Refresh balance
+        getBalance();
+      } catch (error) {
+        // Hide loader and show error message
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('status').innerText = `Error: ${error.message}`;
+      }
+    }
+
+    function updateTransactionHistory() {
+      const historyList = document.getElementById('transactionHistory');
+      historyList.innerHTML = '';
+      transactionHistory.forEach(tx => {
+        const listItem = document.createElement('li');
+        listItem.innerText = tx;
+        historyList.appendChild(listItem);
       });
-    } catch (e) {
-      document.getElementById("history-table-body").innerHTML =
-        "<tr><td colspan='5'>⚠️ Failed to load mint/burn history</td></tr>";
     }
-  }
 
-  loadMintBurnHistory();
-</script>
+    // Auto-refresh balance every 5 seconds
+    function startAutoRefresh() {
+      setInterval(() => {
+        if (signer) {
+          getBalance();
+        }
+      }, 5000); // Refresh every 5 seconds
+    }
+  </script>
 
 </body>
 </html>
