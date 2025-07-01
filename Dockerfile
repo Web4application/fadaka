@@ -58,3 +58,14 @@ ENV PATH="/app/bin:${PATH}"
 
 ENTRYPOINT ["fadaka-node"]
 CMD ["node", "--config", "/app/config.toml"]
+
+# escape=`
+FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS msvc-builder
+
+RUN choco install -y visualstudio2022buildtools --package-parameters "--includeRecommended"
+RUN setx PATH "%PATH%;C:\\Program Files\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.40.33806\\bin\\Hostx64\\x64"
+
+WORKDIR C:\\src
+COPY . .
+
+# Build commands here (msbuild / cmake -G "Visual Studio 17 2022")
