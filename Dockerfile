@@ -2,33 +2,33 @@
 # 1️⃣  Build stage
 ########################
 FROM ubuntu:24.04 AS builder
-
 ENV DEBIAN_FRONTEND=noninteractive
 
-# ── Install toolchains ────────────────────────────
+# ── Install toolchains ──────────────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential cmake ninja-build pkg-config \
-    clang lld \
-    git curl ca-certificates \
-    golang-go \
+    build-essential clang lld \
+    cmake ninja-build pkg-config \
+    nasm yasm                       \  # ← x86/x86‑64 standalone assembler
+    golang-go git curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
-
-# ── Copy source
 COPY . .
 
 ####################################################
-# 1‑A: Build C/C++ components (Release + LTO) ──────
+# 1‑A: Build C/C++ (+ Assembly)  ────────────────────
 ####################################################
 WORKDIR /src/cpp
+# If your assembly is built by CMake directly (.S/.s), clang handles it.
+# For .asm files with NASM syntax, see cmake snippet below.
 RUN cmake -G Ninja -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER=clang \
             -DCMAKE_CXX_COMPILER=clang++ \
+            -DCMAKE_ASM_NASM_COMPILER=nasm \
             -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
             -DCMAKE_INSTALL_PREFIX=/opt/fadaka \
             .
-RUN ninja && ninja install      # installs into /opt/fadaka/bin/
+RUN ninja && ninja install          # installs into /opt/fadaka/bin/
 
 ####################################################
 # 1‑B: Build Go components  ─────────────────────────
@@ -43,20 +43,15 @@ RUN go build -ldflags="-s -w" -o /opt/fadaka/bin/fadaka-node ./cmd/fadaka
 FROM debian:bookworm-slim
 
 LABEL org.opencontainers.image.source="https://github.com/Web4application/fadaka-blockchain"
-LABEL org.opencontainers.image.description="Fadaka Blockchain full‑stack node"
+LABEL org.opencontainers.image.description="Fadaka Blockchain full‑stack node with assembly support"
 
-# Add a non‑root user (optional but recommended)
 RUN useradd -m -u 10001 fadaka
-
 WORKDIR /app
+
 COPY --from=builder /opt/fadaka /app
+COPY scripts /app/scripts        # optional
 
-# Copy shell helpers (if any)
-COPY scripts /app/scripts
-
-# Expose typical P2P / RPC ports (edit as needed)
 EXPOSE 30303 8545 8546
-
 USER fadaka
 
 ENV PATH="/app/bin:${PATH}"
