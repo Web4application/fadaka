@@ -74,3 +74,9 @@ npx hardhat run scripts/deploy-v2.js --network fadakaTestnet
 ./btfs init
 ./btfs daemon
 
+# 1) Build/pull images (build locally if not yet pushed)
+docker compose build        # or docker compose pull
+# 2) Launch everything
+docker compose up -d
+# 3) Observe logs
+docker compose logs -f node
