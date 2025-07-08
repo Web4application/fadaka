@@ -103,3 +103,5 @@ cd kubo
 ipfs init
 ipfs daemon
 
+git clone https://github.com/eveem-org/panoramix.git
+pip3 install -r requirements.txt
