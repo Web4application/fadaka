@@ -69,3 +69,18 @@ WORKDIR C:\\src
 COPY . .
 
 # Build commands here (msbuild / cmake -G "Visual Studio 17 2022")
+FROM python:3.12-slim AS base
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app/ ./app
+
+# --- Streamlit service
+FROM base AS streamlit
+ENTRYPOINT ["streamlit", "run", "app/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+# --- FastAPI service
+FROM base AS api
+ENV PYTHONUNBUFFERED=1
+ENTRYPOINT ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8000"]
