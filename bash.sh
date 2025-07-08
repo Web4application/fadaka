@@ -95,3 +95,11 @@ cargo install --path ./crates/cast --profile release --force --locked
 cargo install --path ./crates/anvil --profile release --force --locked
 # install Chisel
 cargo install --path ./crates/chisel --profile release --force --locked
+
+wget https://dist.ipfs.tech/kubo/v0.35.0/kubo_v0.35.0_linux-amd64.tar.gz
+tar -xvzf kubo_v0.35.0_linux-amd64.tar.gz
+cd kubo
+./install.sh
+ipfs init
+ipfs daemon
+
