@@ -1,0 +1,21 @@
+{{- if .Values.ui.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fadaka-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fadaka-ui
+  template:
+    metadata:
+      labels:
+        app: fadaka-ui
+    spec:
+      containers:
+      - name: ui
+        image: {{ .Values.ui.image }}
+        ports:
+        - containerPort: {{ .Values.ui.port }}
+{{- end }}
