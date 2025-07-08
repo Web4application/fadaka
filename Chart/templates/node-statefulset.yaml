@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fadaka-node
+spec:
+  selector:
+    matchLabels:
+      app: fadaka-node
+  serviceName: fadaka-node
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fadaka-node
+    spec:
+      containers:
+      - name: node
+        image: {{ .Values.node.image }}
+        ports:
+        - containerPort: {{ .Values.node.p2pPort }}
+        - containerPort: {{ .Values.node.rpcPort }}
+        - containerPort: {{ .Values.node.wsPort }}
+        volumeMounts:
+        - name: chain-data
+          mountPath: /app/data
+        - name: config
+          mountPath: /app/config.toml
+          subPath: config.toml
+      volumes:
+        - name: config
+          configMap:
+            name: fadaka-config
+  volumeClaimTemplates:
+  - metadata:
+      name: chain-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: {{ .Values.node.storage }}
