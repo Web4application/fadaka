@@ -59,3 +59,27 @@ services:
 
 volumes:
   fadaka-data:
+
+ version: "3.9"
+services:
+  dashboard:
+    build:
+      context: .
+      target: streamlit
+    ports: ["8501:8501"]
+    environment:
+      FADAKA_RPC: "${FADAKA_RPC:-http://host.docker.internal:8545}"
+      CONTRACT_ADDR: "${CONTRACT_ADDR:-0xb99925ea17c3780e8b96b4254b911364434be7cc}"
+      BASIC_AUTH_USER: "${API_USER:-admin}"
+      BASIC_AUTH_PASS: "${API_PASS:-changeme}"
+
+  api:
+    build:
+      context: .
+      target: api
+    ports: ["8000:8000"]
+    environment:
+      FADAKA_RPC: "${FADAKA_RPC:-http://host.docker.internal:8545}"
+      CONTRACT_ADDR: "${CONTRACT_ADDR:-0xb99925ea17c3780e8b96b4254b911364434be7cc}"
+      BASIC_AUTH_USER: "${API_USER:-admin}"
+      BASIC_AUTH_PASS: "${API_PASS:-changeme}"
