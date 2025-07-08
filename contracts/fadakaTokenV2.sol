@@ -46,10 +46,16 @@ contract FadakaTokenV2 is Initializable, ERC20BurnableUpgradeable, PausableUpgra
     function version() public pure returns (string memory) {
         return "Fadaka v2.1 - Burnable, Pausable, Role-based";
     }
-mapping (uint => string) public ipfsHashes;
+
+   mapping (uint => string) public ipfsHashes;
 
 function pinToIPFS(uint txId, string memory cid) public {
     ipfsHashes[txId] = cid;
-}
+   }
 
+mapping(uint => string) public contentHash;
+
+function attachData(uint tokenId, string memory cid) public {
+    contentHash[tokenId] = cid;
+  }
 }
