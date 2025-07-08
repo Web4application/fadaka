@@ -1,0 +1,14 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fadaka-grafana-dashboards
+  namespace: {{ .Values.monitoring.grafana.dashboardsNamespace }}
+  labels:
+    grafana_dashboard: "1"
+data:
+  fadaka-node.json: |
+    { "annotations": { }, "title": "Fadaka Node – Blocks & Peers", "panels": [] }
+  fadaka-api.json: |
+    { "annotations": { }, "title": "Fadaka API – Latency & Errors", "panels": [] }
+{{- end }}
