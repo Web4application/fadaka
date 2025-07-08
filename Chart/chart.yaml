@@ -1,5 +1,13 @@
 apiVersion: v2
 name: fadaka
 description: Fadaka Blockchain Node, API, and UI
-version: 0.1.0
+version: 0.2.0             # bump
 appVersion: "1.0.0"
+
+# NEW ⬇︎
+dependencies:
+  - name: postgresql
+    version: 15.5.3         # whatever “helm search repo bitnami/postgresql” shows today
+    repository: oci://registry-1.docker.io/bitnamicharts
+    alias: postgres
+    condition: postgres.enabled
