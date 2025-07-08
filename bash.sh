@@ -1,3 +1,5 @@
+pip install streamlit pandas
+
 # Build (native arch)
 docker build -t fadaka:latest .
 
