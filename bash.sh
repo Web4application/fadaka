@@ -107,3 +107,12 @@ ipfs daemon
 
 git clone https://github.com/eveem-org/panoramix.git
 pip3 install -r requirements.txt
+
+# Fetch Postgres dependency
+helm dependency update fadaka-chart/
+
+# Dry‑run install
+helm install fadaka fadaka-chart/ --namespace fadaka --create-namespace --dry-run
+
+# Real install
+helm install fadaka fadaka-chart/ --namespace fadaka --create-namespace
