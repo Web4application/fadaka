@@ -1,0 +1,2 @@
+- containerPort: 9100
+  name: metrics
