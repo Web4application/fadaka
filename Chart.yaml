@@ -1,0 +1,5 @@
+apiVersion: v2
+name: fadaka
+description: Fadaka Blockchain Node, API, and UI
+version: 0.1.0
+appVersion: "1.0.0"
