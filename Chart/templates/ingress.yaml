@@ -5,8 +5,16 @@ metadata:
   name: fadaka-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+{{- if and .Values.ingress.tls.enabled .Values.ingress.tls.issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.issuer }}
+{{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
+{{- if and .Values.ingress.tls.enabled .Values.ingress.tls.secretName }}
+  tls:
+  - hosts: [ {{ .Values.ingress.host }} ]
+    secretName: {{ .Values.ingress.tls.secretName }}
+{{- end }}
   rules:
   - host: {{ .Values.ingress.host }}
     http:
