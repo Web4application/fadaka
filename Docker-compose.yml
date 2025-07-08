@@ -1,85 +1,34 @@
 version: "3.9"
 
-x-common-env: &common-env
-  FADAKA_NETWORK: ${FADAKA_NETWORK:-mainnet}
-  LOG_LEVEL: info
-
 services:
   node:
-    image: ghcr.io/web4application/fadaka:latest  # built from the Dockerfile we wrote
+    image: ghcr.io/web4application/fadaka-node:latest
     container_name: fadaka-node
-    restart: unless-stopped
-    environment:
-      <<: *common-env
+    ports:
+      - "30303:30303"    # P2P
+      - "8545:8545"      # JSON-RPC
+      - "8546:8546"      # WebSocket
     volumes:
-      - fadaka-data:/app/data
-    ports:
-      - "30303:30303"        # P2P
-      - "8545:8545"          # RPC
-      - "8546:8546"          # WS
-    command: >
-      node --config /app/config.toml
-           --db /app/data
-           --log-level $${LOG_LEVEL}
-
-  peer-registry:
-    image: ghcr.io/web4application/fadaka-registry:latest
-    container_name: fadaka-registry
+      - ./config.toml:/app/config.toml
+      - ./data:/app/data
     restart: unless-stopped
-    environment:
-      <<: *common-env
-      REGISTRY_PORT: 7000
-    ports:
-      - "7000:7000"
 
-  wallet-api:
-    image: ghcr.io/web4application/swift-beta-api:latest
-    container_name: swift-beta-api
-    restart: unless-stopped
-    environment:
-      <<: *common-env
-      PORT: 8000
+  api:
+    image: ghcr.io/web4application/fadaka-api:latest
+    container_name: fadaka-api
     ports:
       - "8000:8000"
     depends_on:
       - node
-
-  faucet:
-    image: ghcr.io/web4application/fadaka-faucet:latest
-    container_name: fadaka-faucet
+    environment:
+      - NODE_RPC_URL=http://node:8545
     restart: unless-stopped
-    environment:
-      <<: *common-env
-      PORT: 5000
-      NODE_RPC_URL: http://node:8545
+
+  ui:
+    image: ghcr.io/web4application/fadaka-ui:latest   # If you published Streamlit as well
+    container_name: fadaka-ui
     ports:
-      - "5000:5000"
+      - "8501:8501"
     depends_on:
-      - node
-
-volumes:
-  fadaka-data:
-
- version: "3.9"
-services:
-  dashboard:
-    build:
-      context: .
-      target: streamlit
-    ports: ["8501:8501"]
-    environment:
-      FADAKA_RPC: "${FADAKA_RPC:-http://host.docker.internal:8545}"
-      CONTRACT_ADDR: "${CONTRACT_ADDR:-0xb99925ea17c3780e8b96b4254b911364434be7cc}"
-      BASIC_AUTH_USER: "${API_USER:-admin}"
-      BASIC_AUTH_PASS: "${API_PASS:-changeme}"
-
-  api:
-    build:
-      context: .
-      target: api
-    ports: ["8000:8000"]
-    environment:
-      FADAKA_RPC: "${FADAKA_RPC:-http://host.docker.internal:8545}"
-      CONTRACT_ADDR: "${CONTRACT_ADDR:-0xb99925ea17c3780e8b96b4254b911364434be7cc}"
-      BASIC_AUTH_USER: "${API_USER:-admin}"
-      BASIC_AUTH_PASS: "${API_PASS:-changeme}"
+      - api
+    restart: unless-stopped
