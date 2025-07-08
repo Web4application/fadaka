@@ -1,0 +1,118 @@
+name: Build & Publish Fadaka Images
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # ↩ manual trigger
+
+env:
+  REGISTRY: ghcr.io                          # change to docker.io if you prefer
+  IMAGE_NAME: ${{ github.repository_owner }}/fadaka-node
+  API_NAME:   ${{ github.repository_owner }}/fadaka-api
+  WIN_NAME:   ${{ github.repository_owner }}/fadaka-node-win
+
+permissions:
+  contents: read
+  packages: write           # required for GHCR pushes
+  attestations: write       # lets buildx upload SBOM & provenance
+
+#######################################################################
+# 1️⃣  Linux multi‑arch build (runtime stage of Dockerfile)            #
+#######################################################################
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    # QEMU enables arm64 builds on an x86 runner
+    - uses: docker/setup-qemu-action@v3
+
+    # Buildx gives us multi‑platform + SBOM + cache
+    - uses: docker/setup-buildx-action@v3
+
+    - name: Log in to GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build & push Fadaka node (Linux)
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: Dockerfile          # ← the cleaned‑up file we wrote earlier
+        target: runtime           # build only the final stage
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: |
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        sbom: true                # SBOM + provenance 💥
+        provenance: true
+        cache-from: type=gha
+        cache-to:   type=gha,mode=max
+
+#######################################################################
+# 2️⃣  FastAPI service (Linux only, small)                              #
+#######################################################################
+  build-api:
+    needs: build-linux
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: docker/setup-buildx-action@v3
+    - uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build & push API image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: Dockerfile
+        target: api
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: |
+          ${{ env.REGISTRY }}/${{ env.API_NAME }}:latest
+        sbom: true
+        provenance: true
+        cache-from: type=gha
+        cache-to:   type=gha,mode=max
+
+#######################################################################
+# 3️⃣  Windows Server 2022 build                                        #
+#######################################################################
+  build-windows:
+    runs-on: windows-2022          # runner with Docker Desktop (process‑isolation)
+    steps:
+    - uses: actions/checkout@v4
+    - uses: docker/setup-buildx-action@v3
+
+    - name: Enable Docker CLI experimental
+      run: |
+        echo '{"experimental": "enabled"}' | Out-File -FilePath $Env:ProgramData\Docker\config\daemon.json -Encoding ascii -Force
+        Restart-Service docker
+
+    - name: Log in to GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build & push Windows image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: Dockerfile.win         # see Dockerfile.win in previous reply
+        platforms: windows/amd64     # only one platform for now
+        push: true
+        tags: |
+          ${{ env.REGISTRY }}/${{ env.WIN_NAME }}:ltsc2022
+        sbom: true
+        provenance: true
