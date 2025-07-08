@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fadaka-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fadaka-api
+  template:
+    metadata:
+      labels:
+        app: fadaka-api
+    spec:
+      containers:
+      - name: api
+        image: {{ .Values.api.image }}
+        ports:
+        - containerPort: {{ .Values.api.port }}
+        env:
+        - name: NODE_RPC_URL
+          value: http://fadaka-node:{{ .Values.node.rpcPort }}
