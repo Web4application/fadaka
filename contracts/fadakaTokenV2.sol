@@ -58,4 +58,9 @@ mapping(uint => string) public contentHash;
 function attachData(uint tokenId, string memory cid) public {
     contentHash[tokenId] = cid;
   }
+mapping(uint256 => string) public assistantCID;
+
+function attachAssistantLog(uint256 tokenId, string memory cid) public {
+    assistantCID[tokenId] = cid;
+ }
 }
