@@ -18,3 +18,5 @@ http://127.0.0.1:8000/docs
 import "github.com/ethereum/dapp-bin/library/math.sol
 
 solc github.com/ethereum/dapp-bin/=dapp-bin/ --base-path /project source.sol
+solc /project/=/contracts/ /project/contract.sol --base-path /project # source unit name: contract.sol
+solc :https://github.com/ethereum/dapp-bin=/usr/local/dapp-bin contract.sol
