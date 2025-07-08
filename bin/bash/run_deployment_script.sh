@@ -14,3 +14,7 @@ pip install -r requirements.txt
 
 uvicorn app.main:app --reload
 http://127.0.0.1:8000/docs
+
+import "github.com/ethereum/dapp-bin/library/math.sol
+
+solc github.com/ethereum/dapp-bin/=dapp-bin/ --base-path /project source.sol
