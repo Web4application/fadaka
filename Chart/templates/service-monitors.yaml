@@ -1,0 +1,38 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fadaka-node
+  namespace: {{ .Values.monitoring.prometheusNamespace }}
+  labels:
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: fadaka-node
+  namespaceSelector:
+    matchNames: [ "{{ .Release.Namespace }}" ]
+  endpoints:
+  - port: rpc           # expose /metrics via RPC’s port?
+    path: /metrics
+    interval: {{ .Values.monitoring.scrapeInterval }}
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fadaka-api
+  namespace: {{ .Values.monitoring.prometheusNamespace }}
+  labels:
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: fadaka-api
+  namespaceSelector:
+    matchNames: [ "{{ .Release.Namespace }}" ]
+  endpoints:
+  - port: 8000
+    path: /metrics
+    interval: {{ .Values.monitoring.scrapeInterval }}
+{{- end }}
