@@ -20,3 +20,32 @@ ingress:
   enabled: false
   className: nginx
   host: fadaka.local
+
+# ─── Monitoring ───────────────────────────────────────────
+monitoring:
+  enabled: true           # set false to disable everything below
+  scrapeInterval: 15s
+  prometheusNamespace: monitoring            # where kube‑prometheus‑stack lives
+  grafana:
+    dashboardsNamespace: monitoring          # Grafana watches ConfigMaps here
+
+# ─── TLS / Ingress ────────────────────────────────────────
+ingress:
+  enabled: true
+  className: nginx
+  host: fadaka.example.com
+  tls:
+    enabled: true
+    issuer: letsencrypt-prod                 # must exist in the cluster
+    secretName: fadaka-tls
+
+# ─── PostgreSQL (Bitnami sub‑chart) ───────────────────────
+postgres:
+  enabled: true
+  primary:
+    persistence:
+      size: 8Gi
+  auth:
+    username: fadaka
+    password: fadaka_pw_change_me            # or store in Secret & refer
+    database: fadaka
