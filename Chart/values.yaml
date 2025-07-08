@@ -1,0 +1,22 @@
+replicaCount: 1
+
+node:
+  image: ghcr.io/web4application/fadaka-node:latest
+  rpcPort: 8545
+  wsPort: 8546
+  p2pPort: 30303
+  storage: 1Gi
+
+api:
+  image: ghcr.io/web4application/fadaka-api:latest
+  port: 8000
+
+ui:
+  enabled: true
+  image: ghcr.io/web4application/fadaka-ui:latest
+  port: 8501
+
+ingress:
+  enabled: false
+  className: nginx
+  host: fadaka.local
