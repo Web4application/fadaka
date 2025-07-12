@@ -8,9 +8,8 @@ setx GPU_ENABLE_LARGE_ALLOCATION 100
 setx GPU_MAX_WORKGROUP_SIZE 1024
 
 @echo off
-cd %~dp0
-cls
+@cd /d "%~dp0"
 
-SRBMiner-MULTI.exe --disable-cpu --algorithm etchash --pool de.ergo.herominers.com:1180 --wallet 9ea4Jv2iHPSDv8xomrhByzgzscxE2oubyJkwJ9dyEGYxHjntNcd.331855
+:: mine to herominers
+rigel.exe -a autolykos2 -o stratum+tcp://de.ergo.herominers.com:1180 -u 9ea4Jv2iHPSDv8xomrhByzgzscxE2oubyJkwJ9dyEGYxHjntNcd.331855 --log-file logs/miner.log
 pause
-
