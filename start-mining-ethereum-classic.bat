@@ -11,6 +11,6 @@ setx GPU_MAX_WORKGROUP_SIZE 1024
 cd %~dp0
 cls
 
-SRBMiner-MULTI.exe --disable-cpu --algorithm etchash --pool  hk.etc.gfwroute.com:1150 --wallet 9ea4Jv2iHPSDv8xomrhByzgzscxE2oubyJkwJ9dyEGYxHjntNcd.331855
+SRBMiner-MULTI.exe --disable-cpu --algorithm etchash --pool de.ergo.herominers.com:1180 --wallet 9ea4Jv2iHPSDv8xomrhByzgzscxE2oubyJkwJ9dyEGYxHjntNcd.331855
 pause
 
