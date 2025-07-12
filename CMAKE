@@ -1,4 +1,4 @@
-enable_language(ASM_NASM)              # activates nasm support
+enable_language(ASM_NASM) # activates nasm support
 
 set(ASM_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/asm/foo.asm)
 
