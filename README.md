@@ -26,6 +26,16 @@ Before starting, make sure you have the following installed:
 
 ---
 
+```bash
+
+| Requirement                   | Typical Fadaka setup                                         |
+| ----------------------------- | ------------------------------------------------------------ |
+| **RPC endpoint**              | `http://localhost:8545` (local node) or remote HTTPS gateway |
+| **Python ≥3.10**              | Same version you use for your FastAPI micro‑services         |
+| **Packages**                  | `pip install streamlit web3 pandas`                          |
+| **ERC‑1155 contract address** | `0xb99925ea17c3780e8b96b4254b911364434be7cc`                 |
+
+```
 ## 🛠️ Installation
 
 ### 1. **Clone the Repository**
