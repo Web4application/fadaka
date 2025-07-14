@@ -1,1 +1,2 @@
-
+cargo install eipw
+eipw --config ./config/eipw.toml <INPUT FILE / DIRECTORY>
