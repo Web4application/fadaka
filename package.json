@@ -31,7 +31,7 @@
     "chai": "^4.4.1",
     "hardhat": "^2.22.0",
     "hardhat-contract-sizer": "^3.1.1",
-    "mocha": "^10.4.0",
+    "mocha": "^11.0.0",
     "solidity-docgen": "^0.6.0",
     "typechain": "^8.0.0",
     "eslint": "^8.56.0",
