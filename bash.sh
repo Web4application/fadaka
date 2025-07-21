@@ -119,3 +119,27 @@ $ helm install fadaka fadaka-chart/ --namespace fadaka --create-namespace
 
 $ git clone https://github.com/Web4application/fadakacoin.git
 $ cd fadakacoin
+
+git clone https://github.com/ethereum/go-ethereum.git
+cd go-ethereum
+
+go install golang.org/dl/go1.23@latest
+go1.23 download
+go1.23 env
+
+go build -o build/bin/geth ./cmd/geth
+
+./build/bin/geth --http --dev --datadir "./data"
+
+go get -u ./...
+
+go vet ./...
+staticcheck ./...
+go test ./...
+
+go build -ldflags="-s -w" -o build/geth ./cmd/geth
+
+GOFLAGS="-ldflags=-linkmode=external -extldflags=-O2" go build ...
+
+docker build -t geth-local .
+docker run -p 8545:8545 geth-local --http
