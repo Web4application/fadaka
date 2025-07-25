@@ -1,0 +1,12 @@
+{
+  "data-root": "D:\\Fadaka\\docker-data",
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m",
+    "max-file": "3"
+  },
+  "experimental": true,
+  "debug": true,
+  "insecure-registries": ["localhost:5000"],
+  "registry-mirrors": ["https://mirror.gcr.io"]
+}
