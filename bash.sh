@@ -151,3 +151,7 @@ cd fadaka_proxy_deployment/contracts
 git mv "ipfs_addr.h " "ipfs_addr.h"
 git commit -m "Fix: Removed trailing space in filename"
 git push
+
+git rm --cached "fadaka_proxy_deployment/contracts/ipfs_addr.h "
+git commit -m "Remove invalid file with trailing space"
+git push
