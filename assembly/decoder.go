@@ -1,3 +1,9 @@
+if len(bytecode) >= 4 {
+    selector := fmt.Sprintf("%x", bytecode[0:4])
+    sig := DecodeSelector(selector)
+    fmt.Printf("\n🔍 Function Selector: 0x%s → %s\n\n", selector, sig)
+}
+
 package assembly
 
 import (
