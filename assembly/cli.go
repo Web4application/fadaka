@@ -9,18 +9,18 @@ import (
 
 func main() {
     if len(os.Args) < 3 || os.Args[1] != "decode" {
-        fmt.Println("Usage: fadakaasm decode --bytecode 0x...")
+        fmt.Println("Usage: fadakaasm decode <hexbytecode>")
         return
     }
 
-    hexData := os.Args[2]
-    if hexData[:2] == "0x" {
-        hexData = hexData[2:]
+    hexStr := os.Args[2]
+    if len(hexStr) >= 2 && hexStr[:2] == "0x" {
+        hexStr = hexStr[2:]
     }
 
-    bytecode, err := hex.DecodeString(hexData)
+    bytecode, err := hex.DecodeString(hexStr)
     if err != nil {
-        fmt.Println("Invalid bytecode:", err)
+        fmt.Println("Invalid hex:", err)
         return
     }
 
