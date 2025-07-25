@@ -1,0 +1,14 @@
+name: Check Docker Daemon for Fadaka
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-docker:
+    runs-on: self-hosted
+
+    steps:
+      - name: Run Docker Daemon Check Script
+        run: |
+          chmod +x ./scripts/check_docker_daemon.sh
+          ./scripts/check_docker_daemon.sh
