@@ -60,3 +60,50 @@ var opcodeTable = map[byte]func(*VM){
     0x60: func(vm *VM) { vm.push(uint64(vm.Code[vm.PC])); vm.PC++ }, // PUSH1
     0xfe: func(vm *VM) { fmt.Println("🚨 INVALID OPCODE"); vm.Halted = true },
 }
+
+func (vm *VM) execute(op byte) {
+    gasCost := vm.gasTable[op]
+    if vm.Gas < gasCost {
+        fmt.Println("⛽ Out of gas!")
+        vm.Halted = true
+        return
+    }
+    vm.Gas -= gasCost
+    if handler, exists := opcodeTable[op]; exists {
+        handler(vm)
+    } else {
+        fmt.Printf("🚫 Invalid opcode: 0x%x\n", op)
+        vm.Halted = true
+    }
+}
+
+vm.gasTable = map[byte]uint64{
+    0x00: 0, 0x01: 3, 0x02: 5, 0x03: 3, 0x04: 5,
+    0x05: 5, 0x10: 3, 0x14: 3, 0x50: 2, 0x56: 8,
+    0x60: 3,
+}
+
+0x51: func(vm *VM) {
+    offset := vm.pop()
+    if int(offset)+32 > len(vm.Memory) {
+        vm.Halted = true
+        return
+    }
+    var value uint64
+    for i := 0; i < 8; i++ {
+        value |= uint64(vm.Memory[int(offset)+i]) << (8 * (7 - i))
+    }
+    vm.push(value)
+},
+
+0x52: func(vm *VM) {
+    offset := vm.pop()
+    value := vm.pop()
+    if int(offset)+8 > len(vm.Memory) {
+        vm.Halted = true
+        return
+    }
+    for i := 0; i < 8; i++ {
+        vm.Memory[int(offset)+i] = byte(value >> (8 * (7 - i)))
+    }
+},
