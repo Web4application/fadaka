@@ -1,0 +1,24 @@
+{
+  "name": "fadaka-core",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Core modules for the Fadaka blockchain project",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest run",
+    "lint": "eslint . --ext .ts,.js",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "ethers": "^6.8.1",
+    "web3": "^4.2.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "typescript": "^5.4.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.2.5",
+    "vitest": "^1.2.0"
+  }
+}
