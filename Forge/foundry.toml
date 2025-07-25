@@ -1,0 +1,24 @@
+[profile.default]
+src = "contracts"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+cache_path = "cache"
+
+solc_version = "0.8.19"
+optimizer = true
+optimizer_runs = 200
+evm_version = "paris"
+
+gas_reports = ["*"]
+rpc_endpoints = { fadaka = "https://rpc.fadaka.org" }
+default_rpc = "fadaka"
+
+fuzz_runs = 256
+bytecode_hash = "ipfs"
+verbosity = 3
+ffi = true
+
+[etherscan]
+fadaka = { key = "${ETHERSCAN_API_KEY}", url = "https://explorer.fadaka.org/api" }
