@@ -165,3 +165,5 @@ rm pnpm-lock.yaml node_modules -rf
 pnpm install
 
 git apply fix-typechain-version.patch
+
+go install github.com/ethereum/go-ethereum/cmd/abigen@latest
