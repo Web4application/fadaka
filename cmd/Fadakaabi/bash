@@ -1,0 +1,3 @@
+go run main.go -mode encode -abi sample_abi.json -func transfer -args 0xAbc123...,100000
+
+go run main.go -mode decode -abi sample_abi.json -func transfer -input 0xa9059cbb000000000000...
