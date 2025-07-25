@@ -35,3 +35,5 @@ func (vm *VM) Run() {
         }
     }
 }
+
+Storage map[uint64]uint64 // Simple key-value for now
