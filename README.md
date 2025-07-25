@@ -148,6 +148,32 @@ Read the [FadakaCoin Whitepaper](whitepaper/fadaka-coin-whitepaper.pdf) for deta
 
 We welcome contributions! To contribute, please fork the repository and submit a pull request. If you have any issues or feature requests, open an issue in the GitHub repository.
 
+
+# Fadaka Docker Configuration Scripts
+
+These scripts ensure your Docker daemon is properly configured for the Fadaka Blockchain environment.
+
+## 🖥 Supported Features
+
+- Custom Docker data root
+- Logging options for clean volume management
+- Mirror + insecure registry support
+- Experimental + debug features enabled
+
+## 📦 Scripts
+
+| Script                          | Description                           |
+|---------------------------------|---------------------------------------|
+| `check_docker_daemon.sh`        | Linux auto-config for Docker daemon   |
+| `check-docker-daemon.ps1`       | Windows PowerShell config script      |
+| `install_fadaka_docker_config.sh` | Linux installer/runner script         |
+
+## 🚀 Usage
+
+### On Linux
+
+```bash
+bash scripts/install_fadaka_docker_config.sh
 ---
 
 ## 📚 Resources
