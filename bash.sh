@@ -142,4 +142,12 @@ go build -ldflags="-s -w" -o build/geth ./cmd/geth
 GOFLAGS="-ldflags=-linkmode=external -extldflags=-O2" go build ...
 
 docker build -t geth-local .
-docker run -p 8545:8545 geth-local --http
+docker run -p 5000:5000 geth-local --http:localhost:8000
+
+# Go to the project root
+cd fadaka_proxy_deployment/contracts
+
+# Rename the file to remove the trailing space
+git mv "ipfs_addr.h " "ipfs_addr.h"
+git commit -m "Fix: Removed trailing space in filename"
+git push
