@@ -1,3 +1,7 @@
+git clone https://github.com/Web4application/fadaka.git
+cd fadaka
+git checkout -b renovate/fix-typechain-range
+
 $ pip install streamlit pandas
 
 # Build (native arch)
