@@ -107,3 +107,32 @@ vm.gasTable = map[byte]uint64{
         vm.Memory[int(offset)+i] = byte(value >> (8 * (7 - i)))
     }
 },
+
+0x54: func(vm *VM) { // SLOAD
+    key := vm.pop()
+    value := vm.Storage[key]
+    vm.push(value)
+},
+0x55: func(vm *VM) { // SSTORE
+    key := vm.pop()
+    value := vm.pop()
+    vm.Storage[key] = value
+},
+
+0xf0: func(vm *VM) { // CREATE
+    size := vm.pop()
+    offset := vm.pop()
+    if int(offset)+int(size) > len(vm.Memory) {
+        vm.Halted = true
+        return
+    }
+
+    bytecode := make([]byte, size)
+    copy(bytecode, vm.Memory[offset:offset+size])
+
+    contractAddress := uint64(len(vm.Storage) + 1000) // dummy
+    vm.Storage[contractAddress] = uint64(len(bytecode)) // marker
+
+    fmt.Printf("📦 Deployed contract at address: %d with %d bytes\n", contractAddress, len(bytecode))
+    vm.push(contractAddress)
+},
