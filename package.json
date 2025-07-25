@@ -28,7 +28,7 @@
     "@nomiclabs/hardhat-etherscan": "^4.1.0",
     "@typechain/ethers-v6": "^3.0.0",
     "@typechain/hardhat": "^9.0.0",
-    "chai": "^4.4.1",
+    "chai": "^5.0.0",
     "hardhat": "^2.22.0",
     "hardhat-contract-sizer": "^3.1.1",
     "mocha": "^10.4.0",
