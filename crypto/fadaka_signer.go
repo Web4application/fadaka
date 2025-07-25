@@ -3,73 +3,83 @@ package crypto
 import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
+	crand "crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"math/big"
 )
 
-type Signature struct {
-	R *big.Int
-	S *big.Int
+// FadakaKeyPair represents a secp256k1 keypair.
+type FadakaKeyPair struct {
+	PrivateKey *ecdsa.PrivateKey
+	PublicKey  ecdsa.PublicKey
 }
 
-// Signer defines the interface for digital signature operations.
-type Signer interface {
-	Sign(data []byte) (*Signature, error)
-	Verify(data []byte, sig *Signature) bool
-	Address() string
-	PublicKey() *ecdsa.PublicKey
-}
-
-// FadakaSigner implements the Signer interface using ECDSA
-type FadakaSigner struct {
-	privateKey *ecdsa.PrivateKey
-}
-
-func NewFadakaSigner(priv *ecdsa.PrivateKey) *FadakaSigner {
-	return &FadakaSigner{privateKey: priv}
-}
-
-func GenerateFadakaSigner() (*FadakaSigner, error) {
-	priv, err := ecdsa.GenerateKey(elliptic.P256(), randReader())
+// GenerateKeyPair creates a new ECDSA secp256k1 keypair.
+func GenerateKeyPair() (*FadakaKeyPair, error) {
+	privKey, err := ecdsa.GenerateKey(elliptic.P256(), crand.Reader) // Swap with secp256k1 if using full lib
 	if err != nil {
 		return nil, err
 	}
-	return NewFadakaSigner(priv), nil
+	return &FadakaKeyPair{
+		PrivateKey: privKey,
+		PublicKey:  privKey.PublicKey,
+	}, nil
 }
 
-func (s *FadakaSigner) Sign(data []byte) (*Signature, error) {
-	hash := sha256.Sum256(data)
-	r, sigS, err := ecdsa.Sign(randReader(), s.privateKey, hash[:])
+// SignMessage signs a message and returns r||s hex string.
+func SignMessage(privateKey *ecdsa.PrivateKey, message []byte) (string, error) {
+	hash := sha256.Sum256(message)
+	r, s, err := ecdsa.Sign(crand.Reader, privateKey, hash[:])
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return &Signature{R: r, S: sigS}, nil
+	return r.Text(16) + "|" + s.Text(16), nil
 }
 
-func (s *FadakaSigner) Verify(data []byte, sig *Signature) bool {
-	hash := sha256.Sum256(data)
-	return ecdsa.Verify(&s.privateKey.PublicKey, hash[:], sig.R, sig.S)
+// VerifySignature verifies a signature given r||s and message.
+func VerifySignature(pubKey ecdsa.PublicKey, message []byte, signature string) (bool, error) {
+	parts := splitSignature(signature)
+	if parts == nil {
+		return false, errors.New("invalid signature format")
+	}
+	r, s := parts[0], parts[1]
+	hash := sha256.Sum256(message)
+	return ecdsa.Verify(&pubKey, hash[:], r, s), nil
 }
 
-func (s *FadakaSigner) Address() string {
-	pub := s.privateKey.PublicKey
-	pubBytes := append(pub.X.Bytes(), pub.Y.Bytes()...)
-	addrHash := sha256.Sum256(pubBytes)
-	return hex.EncodeToString(addrHash[len(addrHash)-20:])
+// splitSignature parses "r|s" into *big.Ints.
+func splitSignature(sig string) []*big.Int {
+	parts := make([]*big.Int, 2)
+	split := [2]string{}
+	copy(split[:], splitSig(sig))
+
+	if len(split[0]) == 0 || len(split[1]) == 0 {
+		return nil
+	}
+	r := new(big.Int)
+	s := new(big.Int)
+	r.SetString(split[0], 16)
+	s.SetString(split[1], 16)
+	parts[0], parts[1] = r, s
+	return parts
 }
 
-func (s *FadakaSigner) PublicKey() *ecdsa.PublicKey {
-	return &s.privateKey.PublicKey
+func splitSig(sig string) []string {
+	return splitOnce(sig, "|")
 }
 
-func randReader() *RandomReader {
-	return &RandomReader{}
-}
-
-type RandomReader struct{}
-
-func (r *RandomReader) Read(p []byte) (n int, err error) {
-	return rand.Read(p)
+func splitOnce(s, sep string) []string {
+	i := -1
+	for j := 0; j < len(s); j++ {
+		if string(s[j]) == sep {
+			i = j
+			break
+		}
+	}
+	if i == -1 {
+		return []string{}
+	}
+	return []string{s[:i], s[i+1:]}
 }
