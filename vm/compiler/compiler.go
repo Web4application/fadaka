@@ -25,3 +25,33 @@ func Assemble(program []string) []byte {
     }
     return bytecode
 }
+
+0xf1: func(vm *VM) { // CALL
+    to := vm.pop()
+    input := vm.pop()
+    fmt.Printf("🔁 Calling contract at %d with arg: %d\n", to, input)
+
+    // Mock call logic
+    if _, exists := vm.Storage[to]; exists {
+        result := input + 10
+        vm.push(result)
+    } else {
+        fmt.Println("❌ Call failed. Contract not found.")
+        vm.Halted = true
+    }
+},
+
+0xf1: func(vm *VM) { // CALL
+    to := vm.pop()
+    input := vm.pop()
+    fmt.Printf("🔁 Calling contract at %d with arg: %d\n", to, input)
+
+    // Mock call logic
+    if _, exists := vm.Storage[to]; exists {
+        result := input + 10
+        vm.push(result)
+    } else {
+        fmt.Println("❌ Call failed. Contract not found.")
+        vm.Halted = true
+    }
+},
