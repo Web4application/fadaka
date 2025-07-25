@@ -161,4 +161,7 @@ git commit -m "Remove invalid file with trailing space"
 git push
 
 rm pnpm-lock.yaml node_modules -rf
+
 pnpm install
+
+git apply fix-typechain-version.patch
