@@ -14,10 +14,13 @@ func DecodeBytecode(bytecode []byte) {
 
         fmt.Printf("0x%04x:\t%s\n", pc, name)
         pc += 1
-        if op >= 0x60 && op <= 0x7f { // PUSHn
+
+        // PUSHn detection
+        if op >= 0x60 && op <= 0x7f {
             pushBytes := int(op - 0x5f)
             if pc+pushBytes <= len(bytecode) {
-                fmt.Printf("\t\tPUSH DATA: 0x%x\n", bytecode[pc:pc+pushBytes])
+                data := bytecode[pc : pc+pushBytes]
+                fmt.Printf("\t\tPUSH DATA: 0x%x\n", data)
             }
             pc += pushBytes
         }
