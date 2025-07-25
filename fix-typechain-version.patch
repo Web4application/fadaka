@@ -1,0 +1,11 @@
+diff --git a/package.json b/package.json
+index abcdef1..1234567 100644
+--- a/package.json
++++ b/package.json
+@@ -10,7 +10,8 @@
+   "devDependencies": {
+-    "@typechain/ethers-v6": "^3.0.0",
++    "@typechain/ethers-v6": "^0.5.1",
+     "typechain": "^8.0.0"
+   }
+ }

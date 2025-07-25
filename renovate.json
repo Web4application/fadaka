@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["@typechain/ethers-v6"],
+      "allowedVersions": "^0.5.1",
+      "groupName": "typechain‑updates"
+    },
+    {
+      "matchManagers": ["pnpm"],
+      "enabled": true
+    }
+  ],
+  "rangeStrategy": "bump",
+  "dependencyDashboard": true,
+  "enabledManagers": ["pnpm"],
+  "semanticCommits": true,
+  "labels": ["dependencies", "auto-merge"],
+  "schedule": ["after 6am and before 10pm on every weekday"]
+}
