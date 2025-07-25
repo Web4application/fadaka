@@ -155,3 +155,6 @@ git push
 git rm --cached "fadaka_proxy_deployment/contracts/ipfs_addr.h "
 git commit -m "Remove invalid file with trailing space"
 git push
+
+rm pnpm-lock.yaml node_modules -rf
+pnpm install
