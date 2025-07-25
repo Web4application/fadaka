@@ -35,7 +35,7 @@
     "solidity-docgen": "^0.6.0",
     "typechain": "^8.0.0",
     "eslint": "^8.56.0",
-    "jest": "^29.7.0",
+    "jest": "^30.0.0",
     "husky": "^9.0.0"
   }
 }
