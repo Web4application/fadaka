@@ -1,210 +1,98 @@
-# Fadaka Blockchain
 
-Fadaka Blockchain is a decentralized platform built to support the Fadaka Coin cryptocurrency. It is designed for secure, scalable, and transparent transactions with blockchain analytics and integrated services like Lola (Virtual Assistant) and RODAAI (AI-powered data analytics).
+# 🪙 Fadaka 
+
+**Fadaka** is a custom-built Layer 1 blockchain protocol developed to power the next generation of decentralized applications. Built with performance, modularity, and developer-accessibility in mind, Fadaka merges secure peer-to-peer networking, smart contract logic, and integrated wallet systems under a unified Web4-ready infrastructure.
 
 ---
 
 ## 🚀 Features
 
-* **Decentralized Transactions**: Secure transactions and contract management.
-* **Blockchain Analytics**: Provides real-time analytics for blockchain activity using RODAAI.
-* **Lola Assistant**: Virtual assistant that monitors wallet balances, transactions, and network activity.
-* **Cross-platform Support**: Available on Web and Mobile platforms.
-* **Ethereum-compatible**: Compatible with Ethereum-based wallets and smart contracts.
+- ⚙️ **Custom Blockchain Engine** – Built from scratch in Go
+- 🔐 **TLS-Secured Peer-to-Peer Networking** – Encrypted node communication with registry support
+- 🔄 **HD Wallet Integration** – BIP-39/44-based address generation and mnemonic recovery
+- 🧠 **Fadaka Virtual Machine (FVM)** – Designed for smart contract execution (EVM/WASM compatible)
+- 🔁 **Token Minting & Burning** – On-chain logic with event support and zero address handling
+- 📡 **Transaction Signing & Broadcasting** – FastAPI backend integration for real-time transaction flow
+- 🧪 **Upgradeable Contracts (Proxy Support)** – Transparent proxy pattern for live contract upgrades
+- 💧 **Faucet & Mining** – Native faucet module for test tokens and PoW/PoA mining options
+- 🌐 **Swift Beta Wallet Integration** – Frontend dashboard with QR code, swap, and contract control
+- 🔍 **Contract Debugging & Explorer Hooks** – Bytecode and ABI interpretation tools
+- 🧬 **Web4-AI Ready** – Connects with Web4Node, SwiftBot, and ProjectPilot AI
 
 ---
 
-## 📦 Prerequisites
+## 📁 Project Structure
 
-Before starting, make sure you have the following installed:
+```
 
-* **Node.js**: [Download Node.js](https://nodejs.org/)
-* **npm**: Comes with Node.js.
-* **Go**: [Install Go](https://golang.org/)
-* **Solidity**: Use [Truffle](https://www.trufflesuite.com/) or [Hardhat](https://hardhat.org/) for smart contract deployment.
-* **Metamask Wallet**: To interact with the blockchain.
+fadaka-blockchain/
+├── cmd/                 # Main CLI entry point
+├── node/                # Peer logic, TLS networking
+├── core/                # Blockchain core: ledger, state, VM
+├── wallet/              # HD wallet tools, mnemonic generation
+├── contracts/           # Smart contracts (mint, burn, faucet, proxy)
+├── api/                 # FastAPI backend for signing/broadcasting
+├── scripts/             # Deployment, testing, dev automation
+└── README.md            # You are here
+
+````
 
 ---
 
+## 🔧 Getting Started
+
+### Prerequisites
+- Go 1.20+
+- Python 3.10+ (for API backend)
+- Node.js (for frontend integration)
+
+### Run a Node
 ```bash
+go run ./cmd/main.go
+````
 
-| Requirement                   | Typical Fadaka setup                                         |
-| ----------------------------- | ------------------------------------------------------------ |
-| **RPC endpoint**              | `http://localhost:8545` (local node) or remote HTTPS gateway |
-| **Python ≥3.10**              | Same version you use for your FastAPI micro‑services         |
-| **Packages**                  | `pip install streamlit web3 pandas`                          |
-| **ERC‑1155 contract address** | `0xb99925ea17c3780e8b96b4254b911364434be7cc`                 |
-
-```
-## 🛠️ Installation
-
-### 1. **Clone the Repository**
-
-```bash
-git clone https://github.com/Web4application/fadaka-blockchain.git
-cd fadaka-blockchain
-```
-
-### 2. **Install Backend Dependencies**
+### Start the FastAPI Backend
 
 ```bash
-cd backend
-npm install
+cd api/
+uvicorn main:app --reload
 ```
 
-### 3. **Install Frontend Dependencies**
+### Launch the Wallet UI (Optional)
 
 ```bash
-cd frontend
-npm install
-```
-
-### 4. **Set up Environment Variables**
-
-Create a `.env` file in the root of the project with the following content:
-
-```env
-REACT_APP_API_URL=http://localhost:5000
-REACT_APP_LOLA_API_URL=http://localhost:4000
-REACT_APP_RODAAI_API_URL=http://localhost:5000
-```
-
-### 5. **Run the Development Servers**
-
-To start the backend:
-
-```bash
-cd backend
-npm run start
-```
-
-To start the frontend:
-
-```bash
-cd frontend
-npm run start
+# Serve Jekyll-based Swift Beta Wallet
+cd wallet-ui/
+bundle exec jekyll serve
 ```
 
 ---
 
-## 🌍 Deployment
+## 🧠 Project Philosophy
 
-### 1. **Backend Deployment**
-
-You can deploy the backend services on platforms like **AWS**, **Heroku**, or **DigitalOcean**.
-
-### 2. **Frontend Deployment**
-
-Deploy the frontend on platforms like **Vercel**, **Netlify**, or **AWS Amplify**.
-
-### 3. **Smart Contract Deployment**
-
-Deploy the smart contracts to a test or production Ethereum network using **Truffle** or **Hardhat**.
+Fadaka is more than a blockchain — it's a foundation for intelligent, secure, and future-ready systems. Built to integrate seamlessly with AI agents, decentralized apps, and dynamic contract workflows, Fadaka forms the core infrastructure of the **Web4 movement**.
 
 ---
 
-## 📝 Usage
+## 🤝 Related Projects
 
-* **Blockchain Transactions**: Use Metamask or any Ethereum-compatible wallet to send and receive **FadakaCoin**.
-* **Analytics**: Real-time transaction analytics can be accessed using the **RODAAI** API.
-* **Wallet Notifications**: Receive transaction notifications and wallet updates via **Lola** assistant.
-
----
-
-## 🧪 Testing
-
-Run the tests using:
-
-For frontend tests:
-
-```bash
-cd frontend
-npm test
-```
-
-For backend tests:
-
-```bash
-cd backend
-npm test
-```
+* [SwiftBot](https://github.com/Web4application/swiftbot)
+* [Web4Node](https://github.com/Web4application/web4node)
+* [ProjectPilot AI](https://github.com/QUBUHUB-incs/projectpilot)
+* [CertForge](https://github.com/Web4application/certforge)
+* [Kubuverse](https://github.com/QUBUHUB-incs/kubuverse)
 
 ---
 
-## 🛡️ Security
+## 📜 License
 
-* Make sure to use **SSL/TLS** encryption for communication between services.
-* **Never push your private keys** or sensitive information to public repositories.
-
----
-
-## 📄 Whitepaper
-
-Read the [FadakaCoin Whitepaper](whitepaper/fadaka-coin-whitepaper.pdf) for detailed information about the project and its vision.
+MIT License © 2025 RODA
+Feel free to fork, remix, or build on top of Fadaka — just don’t forget to give credit. 🔗
 
 ---
 
-## 📢 Contributing
+## 🌍 Join the Movement
 
-We welcome contributions! To contribute, please fork the repository and submit a pull request. If you have any issues or feature requests, open an issue in the GitHub repository.
+Fadaka isn’t just software — it’s part of a vision for open, AI-powered, sovereign digital infrastructure.
 
-
-# Fadaka Docker Configuration Scripts
-
-These scripts ensure your Docker daemon is properly configured for the Fadaka Blockchain environment.
-
-## 🖥 Supported Features
-
-- Custom Docker data root
-- Logging options for clean volume management
-- Mirror + insecure registry support
-- Experimental + debug features enabled
-
-## 📦 Scripts
-
-| Script                          | Description                           |
-|---------------------------------|---------------------------------------|
-| `check_docker_daemon.sh`        | Linux auto-config for Docker daemon   |
-| `check-docker-daemon.ps1`       | Windows PowerShell config script      |
-| `install_fadaka_docker_config.sh` | Linux installer/runner script         |
-
-## 🚀 Usage
-
-### On Linux
-
-```bash
-bash scripts/install_fadaka_docker_config.sh
----
-
-## 📚 Resources
-
-* [FadakaCoin GitHub](https://github.com/Web4application/fadakacoin.git)
-* [RODAAI GitHub](https://github.com/Web4application/RODAAI.git)
-* [Lola GitHub](https://github.com/Web4application/Lola.git)
-* [Metamask Documentation](https://metamask.io/docs/)
-* [Trust Wallet Documentation](https://developer.trustwallet.com/)
-
----
-
-## 📅 Roadmap
-
-* **Q3 2025**: Launch the mainnet for FadakaCoin.
-* **Q4 2025**: Expand with mobile wallet support.
-* **2026**: Implement advanced AI features for transaction prediction.
-
----
-
-## 💬 Community
-
-Join the community for discussions, updates, and support:
-
-* [Telegram Group](https://t.me/fadakacoin)
-* [Discord Server](https://discord.gg/fadakacoin)
-* [Twitter](https://twitter.com/fadakacoin)
-
----
-
-## 👨‍💻 Authors
-
-* **Web4Application**: Creator and maintainer of the Fadaka Blockchain.
-* **Contributors**: \[List of contributors]
+**Build. Connect. Liberate.**
