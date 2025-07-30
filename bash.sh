@@ -169,3 +169,6 @@ git apply fix-typechain-version.patch
 go install github.com/ethereum/go-ethereum/cmd/abigen@latest
 
 go run assembly/cli.go decode 0x6080604052348015600f57600080fd5b
+
+forge test --match-path tests/Quest.t.sol
+
