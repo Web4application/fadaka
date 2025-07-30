@@ -47,3 +47,11 @@ func (d *DAO) Execute(id string) {
     d.treasury -= 100 // example disbursement
     d.proposals[id].executed = true
 }
+
+// DAO contract adjusts vote weight based on identity score
+func (d *DAO) WeightedVote(id string, support bool) {
+    Require(sender in d.members)
+    score := IdentityRegistry.GetScore(sender)
+    if support { d.proposals[id].votesYes += score }
+    else { d.proposals[id].votesNo += score }
+}
