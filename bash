@@ -6,3 +6,8 @@ cd contracts/hello
 make build
 
 go run vm/runner.go
+
+fadaka-cli deploy SovereignIdentity --upgradeable
+fadaka-cli deploy DAOModerator --trust-gated
+fadaka-cli deploy QuestEngine --agent Web4Node
+fadaka-cli deploy VaultTreasury --strategy AI
