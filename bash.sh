@@ -15,7 +15,8 @@ git checkout -b renovate/fix-typechain-range
   -p 30303:30303 -p 8545:8545 \
   fadaka:latest
 
-
+cd rodaai-backend
+uvicorn app.main:app --host 0.0.0.0 --port 7000
 # In a separate terminal, start local blockchain node
  npx hardhat node
  npx hardhat run scripts/deploy.js --network localhost
