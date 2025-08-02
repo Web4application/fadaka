@@ -1,0 +1,3 @@
+# Replace with real values:
+private_key: "YOUR_PRIVATE_KEY_HERE"
+rpc_url: "http://localhost:8545"
