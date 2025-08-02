@@ -183,3 +183,13 @@ fadaka-cli deploy SovereignIdentity --upgradeable
 fadaka-cli deploy DAOModerator --trust-gated
 fadaka-cli deploy QuestEngine --agent Web4Node
 fadaka-cli deploy VaultTreasury --strategy AI
+
+go build -o fadaka ./cmd/fadaka
+./fadaka start
+go mod tidy
+git clone https://github.com/Web4application/fadakacoin.git
+cd fadakacoin
+
+git clone https://github.com/Web4application/fadaka.git
+cd fadaka
+
