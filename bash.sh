@@ -214,3 +214,9 @@ web4app-fadaka/
 └── assets/
     ├── style.css
     └── app.js
+
+    cd your-fadaka-repo
+unzip ../fadaka-typechain-setup.zip
+cd contracts && rm Example.sol && rm -rf test # if you already have them
+cd ../ # back to root
+npm install
