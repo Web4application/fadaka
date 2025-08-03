@@ -96,3 +96,5 @@ Feel free to fork, remix, or build on top of Fadaka — just don’t forget to g
 Fadaka isn’t just software — it’s part of a vision for open, AI-powered, sovereign digital infrastructure.
 
 **Build. Connect. Liberate.**
+
+
