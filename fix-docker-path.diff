@@ -1,0 +1,10 @@
+diff --git a/scripts/config.js b/scripts/config.js
+index abc1234..def5678 100644
+--- a/scripts/config.js
++++ b/scripts/config.js
+@@ -12,7 +12,7 @@ const config = {
+-  dockerDaemonPath: "\"Docker\\\\config\\\\daemon.json\"",
++  dockerDaemonPath: "C:\\\\ProgramData\\\\Docker\\\\config\\\\daemon.json",
+   network: "fadaka-testnet",
+   apiPort: 8545
+ };
