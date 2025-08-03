@@ -194,3 +194,23 @@ cd fadakacoin
 git clone https://github.com/Web4application/fadaka.git
 cd fadaka
 
+mkdir web4app-fadaka && cd web4app-fadaka
+mkdir assets
+---
+
+```
+web4app-fadaka/
+├── index.html
+├── wallet.html
+├── dapp.html
+├── network.html
+├── settings.html
+├── contracts.html
+├── about.html
+├── config.js
+├── .env.development
+├── .env.production
+├── favicon.ico
+└── assets/
+    ├── style.css
+    └── app.js
