@@ -1,0 +1,11 @@
+{
+  "data-root": "C:\\ProgramData\\Docker\\data",
+  "log-level": "warn",
+  "storage-driver": "windowsfilter",
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+{
+  "data-root": "/var/lib/docker",
+  "log-level": "warn",
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
