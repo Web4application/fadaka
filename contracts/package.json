@@ -1,0 +1,18 @@
+{
+  "name": "fadaka",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fadaka blockchain core project with ethers and typechain support",
+  "scripts": {
+    "build": "tsc",
+    "typechain": "typechain --target ethers-v6 --out-dir ./types './contracts/*.sol'"
+  },
+  "dependencies": {
+    "ethers": "^6.8.1"
+  },
+  "devDependencies": {
+    "@typechain/ethers-v6": "0.5.1",
+    "typechain": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}
