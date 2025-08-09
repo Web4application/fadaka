@@ -1,7 +1,13 @@
+
+```bash
+
 git clone https://github.com/Web4application/fadaka.git
 cd fadaka
+
 git checkout -b renovate/fix-typechain-range
 
+git clone https://github.com/eveem-org/panoramix.git
+pip3 install -r requirements.txt
  pip install streamlit pandas
 
 # Build (native arch)
