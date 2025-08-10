@@ -1,0 +1,25 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Hardhat dependencies
+        run: |
+          cd fadaka-blockchain
+          npm install
+
+      - name: Run pipeline
+        run: bash scripts/ci_pipeline.sh
