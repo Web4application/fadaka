@@ -17,3 +17,16 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+async function main() {
+  const [deployer] = await ethers.getSigners();
+  console.log("Deploying with", deployer.address);
+
+  const Fadaka = await ethers.getContractFactory("FadakaToken");
+  // Replace args: name, symbol, initialSupply (whole tokens)
+  const token = await Fadaka.deploy("Fadaka Token", "FAD", 1000000);
+  await token.deployed();
+
+  console.log("Token deployed to:", token.address);
+}
+main().catch(e => { console.error(e); process.exit(1); });
