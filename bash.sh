@@ -413,6 +413,8 @@ fadaka-cli deploy VaultTreasury --strategy AI
 
 go build -o fadaka ./cmd/fadaka
 ./fadaka start
+
+```
 go mod tidy
 git clone https://github.com/Web4application/fadakacoin.git
 cd fadakacoin
