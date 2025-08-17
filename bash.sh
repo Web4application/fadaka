@@ -1,5 +1,5 @@
 npx degit Web3Auth/web3auth-examples/quick-starts/vue-quick-start w3a-quick-start
-
+import { WagmiProvider } from "@web3auth/modal/vue/wagmi";
 
 git clone https://github.com/Web4application/fadaka.git
 cd fadaka
