@@ -1,3 +1,6 @@
+npx degit Web3Auth/web3auth-examples/quick-starts/vue-quick-start w3a-quick-start
+
+
 git clone https://github.com/Web4application/fadaka.git
 cd fadaka
 
