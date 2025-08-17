@@ -1,1 +1,1 @@
-
+import { WagmiProvider } from "@web3auth/modal/vue/wagmi";
