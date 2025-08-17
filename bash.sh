@@ -1,3 +1,6 @@
+git clone https://github.com/metamask/metamask-sdk-examples.git
+cd metamask-sdk-examples/examples/quickstart/
+
 npx degit Web3Auth/web3auth-examples/quick-starts/vue-quick-start w3a-quick-start
 import { WagmiProvider } from "@web3auth/modal/vue/wagmi";
 
