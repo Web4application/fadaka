@@ -1,5 +1,4 @@
 ; RUN: %swift-llvm-opt -passes=swift-llvm-arc-optimize %s | %FileCheck %s
-
 ; Use this testfile to check if the `swift-frontend -swift-dependency-tool` option works.
 ; RUN: %swift_frontend_plain -swift-llvm-opt -passes=swift-llvm-arc-optimize %s | %FileCheck %s
 
