@@ -1,0 +1,78 @@
+// Fadaka Smart Contract: ARC-inspired resource management
+contract ResourceARC {
+
+    // Storage for "retained" resources
+    mapping(address => uint256) public retainedResources;
+    mapping(address => uint256) public unownedResources;
+    
+    event Retain(address indexed owner, uint256 amount);
+    event Release(address indexed owner, uint256 amount);
+    event BorrowUnowned(address indexed borrower, uint256 amount);
+    event ReturnUnowned(address indexed borrower, uint256 amount);
+
+    // ---- TRIVIAL RETAIN / RELEASE ----
+    function trivialRetainRelease(address user, uint256 amount) public {
+        retain(user, amount);
+        release(user, amount);
+    }
+
+    // Retain resources for a user
+    function retain(address user, uint256 amount) internal {
+        require(user != address(0), "Cannot retain null address");
+        retainedResources[user] += amount;
+        emit Retain(user, amount);
+    }
+
+    // Release resources for a user
+    function release(address user, uint256 amount) internal {
+        require(user != address(0), "Cannot release null address");
+        uint256 held = retainedResources[user];
+        require(held >= amount, "Not enough resources to release");
+        retainedResources[user] -= amount;
+        emit Release(user, amount);
+    }
+
+    // ---- UNOWNED / BRIDGE RESOURCES ----
+    function borrowUnowned(address borrower, uint256 amount) public {
+        require(borrower != address(0), "Invalid borrower");
+        unownedResources[borrower] += amount;
+        emit BorrowUnowned(borrower, amount);
+    }
+
+    function returnUnowned(address borrower, uint256 amount) public {
+        require(borrower != address(0), "Invalid borrower");
+        uint256 held = unownedResources[borrower];
+        require(held >= amount, "Nothing to return");
+        unownedResources[borrower] -= amount;
+        emit ReturnUnowned(borrower, amount);
+    }
+
+    // ---- SAFE NULL OPERATION EXAMPLE ----
+    function safeRetainRelease(address user, uint256 amount) public {
+        if (user == address(0)) return;  // skip nulls
+        retain(user, amount);
+        release(user, amount);
+    }
+
+    // ---- COMPLEX OPERATION / RETAIN MOTION ----
+    function retainMotion(address user, uint256 amount, uint256 extra) public {
+        retain(user, amount);
+        // Perform operations while holding resources
+        retainedResources[user] += extra;
+        release(user, amount);
+    }
+
+    // ---- UNKNOWN / EXTERNAL CALLS ----
+    function unknownCallMotion(address user, uint256 amount, address externalAddr) public {
+        retain(user, amount);
+        // Call external contract (like Swift's unknown_func)
+        IExternal(externalAddr).doSomething(user, amount);
+        release(user, amount);
+    }
+
+}
+
+// External interface simulation
+interface IExternal {
+    function doSomething(address user, uint256 amount) external;
+}
