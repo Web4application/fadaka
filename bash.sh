@@ -1,3 +1,8 @@
+find . -type f \( -name "*.s" -o -name "*.ll" -o -name "*.l" -o -name "*.S" \)
+
+mkdir -p vendor/runtime
+mv $(find . -type f \( -name "*.s" -o -name "*.ll" -o -name "*.l" -o -name "*.S" \)) vendor/runtime/
+
 git clone https://github.com/metamask/metamask-sdk-examples.git
 cd metamask-sdk-examples/examples/quickstart/
 
