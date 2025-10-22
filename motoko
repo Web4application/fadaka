@@ -1,0 +1,158 @@
+import Region "mo:stable/Region";
+import Blob "mo:base/Blob";
+import Trie "mo:base/Trie";
+
+actor MMOEngine {
+
+    // ------------------------
+    // CONFIG
+    // ------------------------
+    let blockSize : Nat = 256_000;         // 256 KB per block
+    let blocksPerRegion : Nat = 10_000;    // 10k blocks per region
+    let pagesPerRegion : Nat = (blockSize * blocksPerRegion) / 64_000;
+
+    // ------------------------
+    // DATA TYPES
+    // ------------------------
+    type PlayerId = Nat;
+    type WorldId = Nat;
+    type BlockRef = { region: Nat; offset: Nat };
+    type PlayerSnapshot = { version: Nat; blocks: [BlockRef] };
+
+    // ------------------------
+    // GLOBAL STATE
+    // ------------------------
+    var regions : [Region.Region] = [Region.create(pagesPerRegion)];
+    var nextOffset : Nat = 0;
+
+    var freeBlocks : Trie.Trie<Nat, [Nat]> = Trie.empty();
+    var playerSnapshots : Trie.Trie<PlayerId, PlayerSnapshot> = Trie.empty();
+
+    var worldRegions : Trie.Trie<WorldId, [Region.Region]> = Trie.empty();
+
+    // ------------------------
+    // MEMORY MANAGEMENT
+    // ------------------------
+    private func allocateBlock() : BlockRef {
+        let lastRegion = regions.size() - 1;
+
+        switch(freeBlocks.get(lastRegion)) {
+            case (? (offsets)) if offsets.size() > 0 {
+                let offset = offsets[0];
+                freeBlocks := freeBlocks.put(lastRegion, Array.tail(offsets));
+                return { region = lastRegion; offset = offset };
+            case _ {
+                if (nextOffset >= blocksPerRegion) {
+                    regions := Array.append(regions, [Region.create(pagesPerRegion)]);
+                    nextOffset := 0;
+                };
+                let offset = nextOffset;
+                nextOffset += 1;
+                return { region = regions.size() - 1; offset = offset };
+            }
+        }
+    };
+
+    private func freeBlock(ref: BlockRef) {
+        let offsets = switch(freeBlocks.get(ref.region)) { case (null) { [] } case (?os) { os } };
+        freeBlocks := freeBlocks.put(ref.region, Array.append(offsets, [ref.offset]));
+    };
+
+    // ------------------------
+    // PLAYER SNAPSHOTS
+    // ------------------------
+    public func createPlayer(playerId: PlayerId) : async Bool {
+        if (playerSnapshots.contains(playerId)) return false;
+        let block = allocateBlock();
+        let snapshot : PlayerSnapshot = { version = 1; blocks = [block] };
+        playerSnapshots := playerSnapshots.put(playerId, snapshot);
+        return true;
+    };
+
+    public func savePlayer(playerId: PlayerId, data: Blob.Blob) : async Bool {
+        switch(playerSnapshots.get(playerId)) {
+            case (null) { return false };
+            case (?snapshot) {
+                let block = allocateBlock();
+                Region.write(regions[block.region], block.offset, data);
+                // Versioning
+                let updatedSnapshot = { version = snapshot.version + 1; blocks = Array.append(snapshot.blocks, [block]) };
+                playerSnapshots := playerSnapshots.put(playerId, updatedSnapshot);
+                return true;
+            }
+        }
+    };
+
+    public func loadPlayer(playerId: PlayerId, version: ?Nat) : async Blob.Blob {
+        switch(playerSnapshots.get(playerId)) {
+            case (null) { return blob "" };
+            case (?snapshot) {
+                let ver = switch(version) { case (null) { snapshot.version } case (?v) { v } };
+                let block = snapshot.blocks[ver - 1];
+                return Region.read(regions[block.region], block.offset, blockSize);
+            }
+        }
+    };
+
+    public func deletePlayer(playerId: PlayerId) : async Bool {
+        switch(playerSnapshots.get(playerId)) {
+            case (null) { return false };
+            case (?snapshot) {
+                for (block in snapshot.blocks) { freeBlock(block) };
+                playerSnapshots := playerSnapshots.remove(playerId);
+                return true;
+            }
+        }
+    };
+
+    // ------------------------
+    // WORLD MANAGEMENT
+    // ------------------------
+    public func createWorld(worldId: WorldId) : async Bool {
+        if (worldRegions.contains(worldId)) return false;
+        worldRegions := worldRegions.put(worldId, [Region.create(pagesPerRegion)]);
+        return true;
+    };
+
+    public func saveWorld(worldId: WorldId, data: Blob.Blob, offset: Nat) : async Bool {
+        switch(worldRegions.get(worldId)) {
+            case (null) { return false };
+            case (?regions) {
+                Region.write(regions[0], offset, data);
+                return true;
+            }
+        }
+    };
+
+    public func loadWorld(worldId: WorldId, length: Nat, offset: Nat) : async Blob.Blob {
+        switch(worldRegions.get(worldId)) {
+            case (null) { return blob "" };
+            case (?regions) { return Region.read(regions[0], offset, length); }
+        }
+    };
+
+    // ------------------------
+    // CROSS-WORLD MIGRATION
+    // ------------------------
+    public func migratePlayer(playerId: PlayerId, targetWorld: WorldId) : async Bool {
+        switch(playerSnapshots.get(playerId)) {
+            case (null) { return false };
+            case (?snapshot) {
+                // Logic: read player data, remove from current, write to target world blocks
+                var combinedData : Blob.Blob = blob "";
+                for (block in snapshot.blocks) {
+                    combinedData := Blob.append(combinedData, Region.read(regions[block.region], block.offset, blockSize));
+                    freeBlock(block); // free old blocks
+                };
+
+                let targetRegions = switch(worldRegions.get(targetWorld)) { case (null) { return false } case (?rs) { rs } };
+                let newBlock = allocateBlock();
+                Region.write(regions[newBlock.region], newBlock.offset, combinedData);
+
+                let newSnapshot : PlayerSnapshot = { version = snapshot.version + 1; blocks = [newBlock] };
+                playerSnapshots := playerSnapshots.put(playerId, newSnapshot);
+                return true;
+            }
+        }
+    };
+};
