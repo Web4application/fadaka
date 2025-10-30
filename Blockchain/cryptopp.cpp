@@ -44,14 +44,14 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "Comments", "Free crypto library, more information available at www.cryptopp.com"
-            VALUE "CompanyName", "Crypto++® project"
-            VALUE "FileDescription", "Crypto++® Library DLL"
+            VALUE "CompanyName", "Crypto++Â® project"
+            VALUE "FileDescription", "Crypto++Â® Library DLL"
             VALUE "FileVersion", "8, 9, 0, 0"
             VALUE "InternalName", "cryptopp"
-            VALUE "LegalCopyright", "Copyright© 1995-2021 by Wei Dai"
-            VALUE "LegalTrademarks", "Crypto++®"
+            VALUE "LegalCopyright", "CopyrightÂ© 1995-2021 by Wei Dai"
+            VALUE "LegalTrademarks", "Crypto++Â®"
             VALUE "OriginalFilename", "cryptopp.dll"
-            VALUE "ProductName", "Crypto++® Library"
+            VALUE "ProductName", "Crypto++Â® Library"
             VALUE "ProductVersion", "8, 9, 0, 0"
         END
     END
@@ -97,3 +97,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
