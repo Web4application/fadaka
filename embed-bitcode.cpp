@@ -1,4 +1,3 @@
-
 ; REQUIRES: CPU=x86_64
 ; RUN: llvm-as %s -o %t.bc
 
