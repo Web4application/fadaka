@@ -1,37 +1,69 @@
-# Etherscan
+---
+tittle: fadaka
+layout: site
+Docs: 
+Description:
+---
 
-## Docs
+[Get Address ERC20 Token Holding](https://docs.etherscan.io/api-reference/endpoint/addresstokenbalance.md): Retrieves the current ERC-20 token balance for a specified address.
 
-- [Get Address ERC20 Token Holding](https://docs.etherscan.io/api-reference/endpoint/addresstokenbalance.md): Retrieves the current ERC-20 token balance for a specified address.
-- [Get Address ERC721 Token Holding](https://docs.etherscan.io/api-reference/endpoint/addresstokennftbalance.md): Retrieves the ERC-721 tokens and their quantities owned by a specific address.
-- [Get Address ERC721 Token Inventory by Contract](https://docs.etherscan.io/api-reference/endpoint/addresstokennftinventory.md): Retrieves the number of ERC-721 token IDs owned by a specific address for each NFT collection.
-- [Get Native Balance for an Address](https://docs.etherscan.io/api-reference/endpoint/balance.md): Retrieves the native token balance held by a specific address.
-- [Get Historical Native Balance for an Address](https://docs.etherscan.io/api-reference/endpoint/balancehistory.md): Retrieves the balance of a specified address at a given block height.
-- [Chainlist](https://docs.etherscan.io/api-reference/endpoint/chainlist.md): Returns the list of all supported Etherscan mainnet and testnet chains.
-- [Get Ethereum Nodes Size](https://docs.etherscan.io/api-reference/endpoint/chainsize.md): Retrieves the total size of the Ethereum blockchain, in bytes, within a specified date range.
-- [Check Proxy Contract Verification Status](https://docs.etherscan.io/api-reference/endpoint/checkproxyverification.md): Check the status of a proxy contract verification.
-- [Check Source Code Verification Status](https://docs.etherscan.io/api-reference/endpoint/checkverifystatus.md): Check the status of a source code verification request.
-- [Get Daily Average Block Size](https://docs.etherscan.io/api-reference/endpoint/dailyavgblocksize.md): Retrieves the average daily block size over a specified date range.
-- [Get Daily Average Block Time](https://docs.etherscan.io/api-reference/endpoint/dailyavgblocktime.md): Retrieves the daily average time taken to successfully mine a block.
-- [Get Daily Average Gas Limit](https://docs.etherscan.io/api-reference/endpoint/dailyavggaslimit.md): Retrieve historical daily average gas limit.
-- [Get Daily Average Gas Price](https://docs.etherscan.io/api-reference/endpoint/dailyavggasprice.md): Retrieve daily average gas price statistics.
-- [Get Daily Average Network Hash Rate](https://docs.etherscan.io/api-reference/endpoint/dailyavghashrate.md): Retrieves the historical hash rate, reflecting the processing power of the network over time.
-- [Get Daily Average Network Difficulty](https://docs.etherscan.io/api-reference/endpoint/dailyavgnetdifficulty.md): Returns the historical mining difficulty data of the network.
-- [Get Daily Block Count and Rewards](https://docs.etherscan.io/api-reference/endpoint/dailyblkcount.md): Retrieves the daily count of mined blocks along with the corresponding block rewards.
+ [Get Address ERC721 Token Holding](https://docs.etherscan.io/api-reference/endpoint/addresstokennftbalance.md): Retrieves the ERC-721 tokens and their quantities owned by a specific address.
+ 
+ [Get Address ERC721 Token Inventory by Contract](https://docs.etherscan.io/api-reference/endpoint/addresstokennftinventory.md): Retrieves the number of ERC-721 token IDs owned by a specific address for each NFT collection.
+ 
+ [Get Native Balance for an Address](https://docs.etherscan.io/api-reference/endpoint/balance.md): Retrieves the native token balance held by a specific address.
+ 
+ [Get Historical Native Balance for an Address](https://docs.etherscan.io/api-reference/endpoint/balancehistory.md): Retrieves the balance of a specified address at a given block height.
+ 
+ [Chainlist](https://docs.etherscan.io/api-reference/endpoint/chainlist.md): Returns the list of all supported Etherscan mainnet and testnet chains.
+ 
+ [Get Ethereum Nodes Size](https://docs.etherscan.io/api-reference/endpoint/chainsize.md): Retrieves the total size of the Ethereum blockchain, in bytes, within a specified date range.
+
+ 
+ [Check Proxy Contract Verification Status](https://docs.etherscan.io/api-reference/endpoint/checkproxyverification.md): Check the status of a proxy contract verification.
+ 
+ [Check Source Code Verification Status](https://docs.etherscan.io/api-reference/endpoint/checkverifystatus.md): Check the status of a source code verification request.
+ 
+ [Get Daily Average Block Size](https://docs.etherscan.io/api-reference/endpoint/dailyavgblocksize.md): Retrieves the average daily block size over a specified date range.
+ 
+ [Get Daily Average Block Time](https://docs.etherscan.io/api-reference/endpoint/dailyavgblocktime.md): Retrieves the daily average time taken to successfully mine a block.
+ 
+ [Get Daily Average Gas Limit](https://docs.etherscan.io/api-reference/endpoint/dailyavggaslimit.md): Retrieve historical daily average gas limit.
+ 
+ [Get Daily Average Gas Price](https://docs.etherscan.io/api-reference/endpoint/dailyavggasprice.md): Retrieve daily average gas price statistics.
+ 
+ [Get Daily Average Network Hash Rate](https://docs.etherscan.io/api-reference/endpoint/dailyavghashrate.md): Retrieves the historical hash rate, reflecting the processing power of the network over time.
+ 
+ [Get Daily Average Network Difficulty](https://docs.etherscan.io/api-reference/endpoint/dailyavgnetdifficulty.md): Returns the historical mining difficulty data of the network.
+ 
+ [Get Daily Block Count and Rewards](https://docs.etherscan.io/api-reference/endpoint/dailyblkcount.md): Retrieves the daily count of mined blocks along with the corresponding block rewards.
+ 
 - [Get Daily Block Rewards](https://docs.etherscan.io/api-reference/endpoint/dailyblockrewards.md): Retrieves the daily distribution of block rewards to miners.
-- [Get Ethereum Daily Total Gas Used](https://docs.etherscan.io/api-reference/endpoint/dailygasused.md): Retrieve the total gas used each day.
+- 
+ [Get Ethereum Daily Total Gas Used](https://docs.etherscan.io/api-reference/endpoint/dailygasused.md): Retrieve the total gas used each day.
+-
 - [Get Daily Network Utilization](https://docs.etherscan.io/api-reference/endpoint/dailynetutilization.md): Retrieves the daily average percentage of gas used relative to the gas limit.
+- 
 - [Get Daily New Address Count](https://docs.etherscan.io/api-reference/endpoint/dailynewaddress.md): Retrieves the daily count of newly created addresses.
-- [Get Daily Transaction Count](https://docs.etherscan.io/api-reference/endpoint/dailytx.md): Retrieves the daily number of transactions executed in the blockchain.
+- 
+ [Get Daily Transaction Count](https://docs.etherscan.io/api-reference/endpoint/dailytx.md): Retrieves the daily number of transactions executed in the blockchain.
+
 - [Get Daily Network Transaction Fee](https://docs.etherscan.io/api-reference/endpoint/dailytxnfee.md): Retrieves the total transaction fees paid to miners each day.
+- 
 - [Get Daily Uncle Block Count and Rewards](https://docs.etherscan.io/api-reference/endpoint/dailyuncleblkcount.md): Returns the daily count of Uncle blocks mined and their associated rewards.
+- 
 - [eth_blockNumber](https://docs.etherscan.io/api-reference/endpoint/ethblocknumber.md): Fetch the latest block number.
+- 
 - [eth_call](https://docs.etherscan.io/api-reference/endpoint/ethcall.md): Execute a call without creating a transaction.
+- 
 - [Get Ether Historical Price](https://docs.etherscan.io/api-reference/endpoint/ethdailyprice.md): Returns the historical price data for 1 ETH.
+- 
 - [eth_estimateGas](https://docs.etherscan.io/api-reference/endpoint/ethestimategas.md): Estimate the gas required for a transaction.
+- 
 - [eth_gasPrice](https://docs.etherscan.io/api-reference/endpoint/ethgasprice.md): Get the current gas price.
-- [eth_getBlockByNumber](https://docs.etherscan.io/api-reference/endpoint/ethgetblockbynumber.md): Get block information by number.
-- [eth_getBlockTransactionCountByNumber](https://docs.etherscan.io/api-reference/endpoint/ethgetblocktransactioncountbynumber.md): Get the number of transactions in a block.
+
+[eth_getBlockByNumber](https://docs.etherscan.io/api-reference/endpoint/ethgetblockbynumber.md): Get block information by number.
+ [eth_getBlockTransactionCountByNumber](https://docs.etherscan.io/api-reference/endpoint/ethgetblocktransactioncountbynumber.md): Get the number of transactions in a block.
 - [eth_getCode](https://docs.etherscan.io/api-reference/endpoint/ethgetcode.md): Get the code stored at an address.
 - [eth_getStorageAt](https://docs.etherscan.io/api-reference/endpoint/ethgetstorageat.md): Get the value at a storage position.
 - [eth_getTransactionByBlockNumberAndIndex](https://docs.etherscan.io/api-reference/endpoint/ethgettransactionbyblocknumberandindex.md): Get transaction details by block number and index.
@@ -102,5 +134,7 @@
 - [Contact Us](https://docs.etherscan.io/resources/contact-us.md)
 - [PRO Endpoints](https://docs.etherscan.io/resources/pro-endpoints.md)
 - [Rate Limits](https://docs.etherscan.io/resources/rate-limits.md)
-- [Supported Chains](https://docs.etherscan.io/supported-chains.md)
-- [V2 Migration](https://docs.etherscan.io/v2-migration.md)
+- [Supported Chains](https://docs.etherscan.io/supported-chains.md)`
+- `[V2 Migration](https://docs.etherscan.io/v2-migration.md`
+
+
