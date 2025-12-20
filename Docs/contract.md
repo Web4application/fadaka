@@ -1,5 +1,5 @@
 # Verify Proxy Contract
-   
+    
 > Submit a proxy contract for verification.
 
 export const chain = '1';
@@ -31,7 +31,8 @@ export const chain = '1';
 </ParamField>
 
 <ResponseExample>
-  ```json Response theme={null}
+  ```json 
+   Response theme={null}
   {
       "status": "1",
       "message": "OK",
