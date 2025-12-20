@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
-
 # 1. Clone into new folder
 mkdir fadaka-blockchain && cd fadaka-blockchain
 
