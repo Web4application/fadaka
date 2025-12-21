@@ -1,0 +1,17 @@
+# /home/dv/merchant/configs/config.yaml
+
+admin:
+  log_status: true
+  # other admin section parameters...
+  logs:
+  positions_directory: /var/lib/grafana-agent-positions
+
+  configs:
+    - name: dv-merchant-logs
+      scrape_configs:
+        - job_name: dv-merchant-api
+          static_configs:
+            - targets: [localhost]
+              labels:
+                job: dv-merchant
+                __path__: /var/log/dv-merchant/*.log
