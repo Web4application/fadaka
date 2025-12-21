@@ -26,8 +26,8 @@ cd metamask-sdk-examples/examples/quickstart/
 npx degit Web3Auth/web3auth-examples/quick-starts/vue-quick-start w3a-quick-start
 import { WagmiProvider } from "@web3auth/modal/vue/wagmi";
 
-git clone https://github.com/Web4application/fadaka.git
-cd fadaka
+git clone https://github.com/Web4application/fadaka-blockchain.git
+cd fadaka-blockchain
 
 git checkout -b renovate/fix-typechain-range
 
@@ -74,6 +74,16 @@ npm run prepare
  npm install
 cd frontend
 npm install
+
+
+# View all API-related entries
+journalctl -u dv-merchant | grep 'DV-API'
+
+# Real-time monitoring
+journalctl -u dv-merchant -f | grep 'DV-API'
+
+# View entries from the last hour with timestamps
+journalctl -u dv-merchant --since "1 hour ago" | grep 'DV-API'
 
  npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox dotenv
 artifacts/contracts/MyContract.sol/MyContract.json
